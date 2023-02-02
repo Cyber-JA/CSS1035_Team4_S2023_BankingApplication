@@ -106,9 +106,9 @@ public class Checking_S2023_TEAM4 extends Account_S2023_TEAM4 {
 	 Balance = Balance + amount;
 	 System.out.println("Deposited amount: " + amount);
 	 if(Balance>=0) { //
-		 
+		 if(this.getOverdraftcounter() > 0)
+			 System.out.println("Overdraft restored.");
 		 this.setOverdraftcounter(0);
-	 
 	 }
  
  }
@@ -116,12 +116,22 @@ public class Checking_S2023_TEAM4 extends Account_S2023_TEAM4 {
   /** Method to perform payment with checking account*/
   public void makePayment(double amount) {
 	  
-	if(this.Balance - amount < 0 ) {
+	if(this.Balance - amount < 0 && this.getOverdraftcounter() != 0) {
 		System.out.println("Cannot process payment. Not enough founds:" + this.getBalance() + ". Amount to pay: " + amount);
 		return;
 	}
-	this.Balance -= amount;
-	System.out.println("Payment completed. New balance: " + this.getBalance());
+	else if(this.Balance - amount < 0 && this.getOverdraftcounter() == 0) {
+		this.Balance -= amount;
+		System.out.println("Insufficient funds, a two dollar fee will be levied.");
+		this.applyOverdraftFee();
+		overdraftcounter++; //mark the overdraft
+		System.out.println("Payment completed. New balance: " + this.getBalance());
+		return;
+	}
+	else {
+		this.Balance -= amount;
+		System.out.println("Payment completed. New balance: " + this.getBalance());
+	}
   }
-
+  
 }
