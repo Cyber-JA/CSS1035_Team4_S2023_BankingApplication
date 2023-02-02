@@ -17,6 +17,7 @@ public class bankDriver {
 		acc1.deposit(1000);
 		System.out.println(acc1.getBalance());
 		acc1.withdraw(500);
+		acc1.makePayment(200);
 		System.out.println("\n");
 		
 		Savings_S2023_TEAM4 saving = new Savings_S2023_TEAM4(0);
@@ -27,6 +28,11 @@ public class bankDriver {
 		saving.withdraw(100);
 		saving.withdraw(100);
 		saving.withdraw(0);
+		saving.deposit(1000);
+		System.out.println(saving.getWithdrawalsAvailable());
+		saving.withdraw(10);
+		System.out.println(saving.getBalance());
+		saving.computeAccruedInterest();
 		
 	}
 
