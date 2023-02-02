@@ -1,13 +1,28 @@
+
 public abstract class Account_S2023_TEAM4 {
  
-  private java.util.Date dateCreated;
-
+    protected java.util.Date dateCreated;
+  	protected double Balance;
  
 	  protected Account_S2023_TEAM4() {
 	    dateCreated = new java.util.Date();
+	    this.Balance = 0;
 	  }
 	
-	 /** Get dateCreated */
+	 protected Account_S2023_TEAM4(double balance) {
+		this.dateCreated = new java.util.Date();
+		Balance = balance;
+	}
+
+	public double getBalance() {
+		return Balance;
+	}
+
+	public void setBalance(double balance) {
+		Balance = balance;
+	}
+
+	/** Get dateCreated */
 	  public java.util.Date getDateCreated() {
 	    return dateCreated;
 	  }
