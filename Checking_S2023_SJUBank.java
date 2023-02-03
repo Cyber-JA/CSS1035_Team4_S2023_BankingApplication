@@ -15,7 +15,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
 		this.setWithdrawalsFee(1);
-		System.out.println("Checking account created. Current balance: " + this.getBalance());
+		System.out.printf("Checking account created. Current balance: (%.2f)\n", this.getBalance());
 	}
 
 	Checking_S2023_SJUBank(double balance) {
@@ -23,7 +23,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
 		this.setWithdrawalsFee(1);
-		System.out.println("Checking account created. Current balance: " + this.getBalance());
+		System.out.printf("Checking account created. Current balance: (%.2f)\n", this.getBalance());
 	}
 	/*************/
 	
@@ -59,16 +59,16 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	
 	/*Method to apply withdrawals fee*/
 	public void applyWithdrawalsFee() {
-		 System.out.println("Applying withdrawals fee (" + this.getOverdraftFee() + "$).");
+		System.out.println("Applying withdrawal fee (" + this.getWithdrawalsFee() + "$)");
 		 Balance = Balance - this.getOverdraftFee();
-		 System.out.println("Current balance after withdrawal: " + this.getBalance());
+		 System.out.printf("Current balance after withdrawal: %.2f\n", this.getBalance());
 	}
 	
 	/*Method to apply overdraft fee*/
 	public void applyOverdraftFee() {
-		 System.out.println("Applying overdraft fee (" + this.getWithdrawalsFee() + "$).");
+		 System.out.println("Applying overdraft fee (" + this.getWithdrawalsFee() + "$)");
 		 Balance = Balance - this.getWithdrawalsFee();
-		 System.out.println("Current balance after overdraft: " + this.getBalance());
+		 System.out.printf("Current balance after overdraft: %.2f\n",  this.getBalance());
 	}
 
 
@@ -122,7 +122,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
   public void makePayment(double amount) {
 	  
 	if(this.Balance - amount < 0 && this.getOverdraftcounter() != 0) {
-		System.out.println("Cannot process payment. Not enough founds:" + this.getBalance() + ". Amount to pay: " + amount);
+		System.out.printf("Cannot process payment. Not enough founds: %.2f. Amount to pay: %.2f\n", this.getBalance(), amount);
 		return;
 	}
 	else if(this.Balance - amount < 0 && this.getOverdraftcounter() == 0) {
@@ -130,12 +130,12 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		System.out.println("Insufficient funds, a two dollar fee will be levied.");
 		this.applyOverdraftFee();
 		overdraftcounter++; //mark the overdraft
-		System.out.println("Payment completed. New balance: " + this.getBalance());
+		System.out.printf("Payment completed. New balance: %.2f\n", this.getBalance());
 		return;
 	}
 	else {
 		this.Balance -= amount;
-		System.out.println("Payment completed. New balance: " + this.getBalance());
+		System.out.printf("Payment completed. New balance: %.2f\n", this.getBalance());
 	}
   }
   

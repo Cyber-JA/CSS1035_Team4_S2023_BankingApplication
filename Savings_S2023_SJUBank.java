@@ -15,14 +15,14 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		this.setBalance(0);
 		this.setWithdrawalsAvailable(2);
 		this.setInterestRate(0.01);
-		System.out.println("Saving account created. Current balance: " + this.getBalance());
+		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());
 	}
 
 	Savings_S2023_SJUBank(double balance) {
 		this.setBalance(balance);
 		this.setWithdrawalsAvailable(2);
 		this.setInterestRate(0.01);
-		System.out.println("Saving account created. Current balance: " + this.getBalance());
+		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());
 	}
 	
 	/*Interest rate getter and setter*/
@@ -58,7 +58,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		
 		else {
 			Balance = Balance - amount;
-			System.out.println("Current Balance:" + getBalance());
+			System.out.printf("Current Balance: (%.2f)\n", getBalance());
 			this.WithdrawalsAvailable--;
 			System.out.println("Withdrawn amount: " + amount);
 			System.out.println("Withdrawals Available after operation: "+ getWithdrawalsAvailable());
@@ -71,6 +71,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		System.out.println("Depositing...");
 		Balance = Balance + amount;	
 		System.out.println("Deposited amount: " + amount);
+		System.out.printf("Current Balance: (%.2f)\n", getBalance());
 	}
 	
 	/*Accrued interest method*/

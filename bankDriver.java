@@ -14,7 +14,7 @@ public class bankDriver {
 		
 		/*attempt to withdraw 100$, this should succeed but overdraft the account. A fee is applied for 
 		 * withdrawals and for overdraft*/
-		acc1.withdraw(100);  //current balance should be: -103$
+		acc1.withdraw(100.1);  //current balance should be: -103$
 		System.out.println();
 		
 		/*attempt to withdraw 1$, this should not succeed because of overdraft*/
@@ -56,7 +56,6 @@ public class bankDriver {
 		saving.computeAccruedInterest();
 		System.out.println();
 		System.out.println("Withdrawals available:" + saving.getWithdrawalsAvailable());
-		
 		//with this account, only a limited number of withdrawals is available
 		/*running out the withdrawals available*/
 		saving.withdraw(10);
