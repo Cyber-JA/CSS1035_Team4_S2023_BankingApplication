@@ -9,7 +9,7 @@ class BankTest {
 	@Test
 	void test() {
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(102);
-		assertEquals(101,acc1.getBalance());
+		assertEquals(102,acc1.getBalance());
 	}
 
 }
