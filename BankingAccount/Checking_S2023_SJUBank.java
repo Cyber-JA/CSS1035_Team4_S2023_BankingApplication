@@ -75,6 +75,10 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
   /** Withdraw method*/
   @Override
  public void withdraw(double amount) {
+	  if(amount <= 0 ) {
+			System.out.println("Error. Insert a valid amount.");  
+			return;
+		  }
 	  System.out.println("Withdrawing...");
 	 if(Balance-amount<0 && overdraftcounter==0) {  // checking if account will be overdrawn by withdrawal
 		 
@@ -107,6 +111,10 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
  /** Deposit method*/
   @Override
  public void deposit(double amount) {
+	  if(amount <= 0 ) {
+		System.out.println("Error. Insert a valid amount.");  
+		return;
+	  }
 	 System.out.println("Depositing...");
 	 Balance = Balance + amount;
 	 System.out.println("Deposited amount: " + amount);
