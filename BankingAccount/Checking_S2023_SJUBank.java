@@ -3,7 +3,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	/*Starting Balance of the Checking account*/
 	//thanks to the superclass, balance is available //private double Balance;
 	/*Overdraft is possible but only once. To perform a new one it is needed to have a positive balance*/
-	private double overdraftcounter;
+	private int overdraftcounter;
 	/*A fee is applied when overdraft*/
 	private double overdraftFee;
 	/*ATM withdrawal fee*/
@@ -38,11 +38,11 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	/*********************************/
 	
 	/*Overdraftcounter getter and setter*/
-	public double getOverdraftcounter() {
+	public int getOverdraftcounter() {
 		return overdraftcounter;
 	}
 
-	public void setOverdraftcounter(double overdraftcounter) {
+	public void setOverdraftcounter(int overdraftcounter) {
 		this.overdraftcounter = overdraftcounter;
 	}
 	/***********************************/
