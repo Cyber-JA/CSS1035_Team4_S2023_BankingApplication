@@ -60,14 +60,14 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	/*Method to apply withdrawals fee*/
 	public void applyWithdrawalsFee() {
 		System.out.println("Applying withdrawal fee (" + this.getWithdrawalsFee() + "$)");
-		 Balance = Balance - this.getOverdraftFee();
+		 Balance = Balance - this.getWithdrawalsFee();
 		 System.out.printf("Current balance after withdrawal: %.2f\n", this.getBalance());
 	}
 	
 	/*Method to apply overdraft fee*/
 	public void applyOverdraftFee() {
 		 System.out.println("Applying overdraft fee (" + this.getWithdrawalsFee() + "$)");
-		 Balance = Balance - this.getWithdrawalsFee();
+		 Balance = Balance - this.getOverdraftFee();
 		 System.out.printf("Current balance after overdraft: %.2f\n",  this.getBalance());
 	}
 
