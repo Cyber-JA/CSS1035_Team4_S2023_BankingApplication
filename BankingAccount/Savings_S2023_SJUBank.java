@@ -19,7 +19,13 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	}
 
 	Savings_S2023_SJUBank(double balance) {
-		this.setBalance(balance);
+		if(balance < 0) {
+			System.out.println("Invalid amount inserted. An account with 0$ will be created and a deposit can be executed.");
+			this.setBalance(0);
+		}
+		else
+			this.setBalance(balance);
+		
 		this.setWithdrawalsAvailable(2);
 		this.setInterestRate(0.01);
 		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());
@@ -52,7 +58,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 			System.out.println("Error. Insert a valid amount.");  
 			return;
 		  }
-		System.out.println("Withdrawing...");
+		System.out.println("Withdrawing amount: " + amount + "...");
 		if(Balance-amount<0) {
 		  System.out.println("Insufficient funds");
 		}
