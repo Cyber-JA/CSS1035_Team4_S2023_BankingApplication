@@ -63,6 +63,7 @@ public class bankDriver {
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(102);
 		/*attempt to withdraw 103$.*/
 		acc1.withdraw(103);
+		/*fees are applied (1$ for withdrawing and 2$ for overdraft)*/
 		/*expected amount is -4$*/
 		if(acc1.getBalance() != -4) {
 			System.out.printf("FAIL! Actual balance: %.2f$. Expected balance: %.2f$\n", acc1.getBalance(), -4.0);
@@ -150,9 +151,9 @@ public class bankDriver {
 	public static void TestSavingsWithdrawlWithNoFunds() {
 		
 		System.out.println("-----Testing Savings Withdrawl with no Funds-----");
-		/*account with initial 102$ dollar is created*/
+		/*account with initial 102$ dollars is created*/
 		Savings_S2023_SJUBank acc1 = new Savings_S2023_SJUBank(102);
-		/*attempt to withdraw 103$. No fee is applied for withdrawals*/
+		/*attempt to withdraw 103$ that should not succeed. No fee is applied for withdrawals*/
 		acc1.withdraw(103);
 		/*expected amount is 102$*/
 		if(acc1.getBalance() != 102) {
@@ -173,7 +174,7 @@ public class bankDriver {
 		acc1.withdraw(1);
 		/*attempt to withdraw 1$. No fee is applied for withdrawals*/
 		acc1.withdraw(1);
-		/*attempt to withdraw 1$. No fee is applied for withdrawals*/
+		/*attempt to withdraw 1$ but this should not succed. No fee is applied for withdrawals*/
 		acc1.withdraw(1);
 		/*expected amount is 100$*/
 		if(acc1.getBalance() != 100) {
