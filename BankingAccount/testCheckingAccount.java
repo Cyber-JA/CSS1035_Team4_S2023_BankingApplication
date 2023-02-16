@@ -47,11 +47,9 @@ class testCheckingAccount {
 		try {
 			acc1.withdraw(1);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (OverdraftAccountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
@@ -67,8 +65,7 @@ class testCheckingAccount {
 		try {
 			acc1.deposit(100);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
@@ -84,11 +81,9 @@ class testCheckingAccount {
 		try {
 			acc1.withdraw(103);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (OverdraftAccountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		}
 		/*fees are applied (1$ for withdrawing and 2$ for overdraft)*/
 		/*expected amount is -4$*/
@@ -108,13 +103,11 @@ class testCheckingAccount {
 			/*attempt to withdraw 1$.*/
 			acc1.withdraw(1);
 		}catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (OverdraftAccountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception: " + e);
+			assertEquals(acc1.getBalance(), -4);
 		}
-		assertEquals(acc1.getBalance(), -4);
 		System.out.println("-----End Withdrawl when overdraft Test-----\n");
 	}
 	@Test
@@ -129,11 +122,9 @@ class testCheckingAccount {
 			/*attempt to restore the overdraft*/
 			acc1.deposit(5);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (OverdraftAccountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception: " + e);
 		}
 		/*expected amount is 1$*/
 		assertEquals(acc1.getBalance(), 1);

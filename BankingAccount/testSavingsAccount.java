@@ -48,11 +48,9 @@ class testSavingsAccount {
 		try {
 			acc1.withdraw(1);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (WithdrawalsAvailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		}
 		/*expected amount is 101$*/
 		assertEquals(acc1.getBalance(), 101);
@@ -68,8 +66,7 @@ class testSavingsAccount {
 		try {
 			acc1.deposit(100);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
@@ -85,11 +82,9 @@ class testSavingsAccount {
 		try {
 			acc1.withdraw(103);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (WithdrawalsAvailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception: " + e);
 		}
 		/*expected amount is 102$*/
 		assertEquals(acc1.getBalance(), 102);
@@ -109,14 +104,12 @@ class testSavingsAccount {
 			/*attempt to withdraw 1$. No fee is applied for withdrawals*/
 			acc1.withdraw(1);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception: " + e);
 		} catch (WithdrawalsAvailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			/*expected amount is 100$*/
+			System.out.println("Exception: " + e);
+			assertEquals(acc1.getBalance(), 100);
 		}
-		/*expected amount is 100$*/
-		assertEquals(acc1.getBalance(), 100);
 		System.out.println("-----End Exceed Withdrawls Available-----\n");
 	}
 }

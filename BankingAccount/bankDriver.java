@@ -11,6 +11,8 @@ public class bankDriver {
 	static Savings_S2023_SJUBank accountS = new Savings_S2023_SJUBank();
 	static String Username = null;
 	static String Password = null;
+	
+	/**************MAIN METHOD*************/
 	public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException, InterruptedException {
 		
 		/*this is the main method. here user input is obtained from cli and then processed*/
@@ -31,6 +33,7 @@ public class bankDriver {
 			}
 		}
 	}
+	/**************************************/
 	
 	/**
 	 * This method is used to retrieve data from db and setup the account*/

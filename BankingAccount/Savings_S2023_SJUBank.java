@@ -26,7 +26,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		try {
 			this.setBalance(balance);
 		} catch (InvalidAmountException e) {
-			e.printStackTrace();
+			System.out.println("Exception: " + e);
 		}
 		this.setWithdrawalsAvailable(2); //should be retrieved by the db
 		this.setInterestRate(0.01);
@@ -60,7 +60,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		if(amount <= 0 ) {
 			throw new InvalidAmountException(amount);
 		  }
-		System.out.println("Withdrawing amount: " + amount + "...");
+		System.out.printf("Withdrawning amount: %.2f ...\n",  amount);
 		if(Balance-amount<0) {
 		  System.out.println("Insufficient funds");
 		}
@@ -72,7 +72,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 			Balance = Balance - amount;
 			System.out.printf("Current Balance: (%.2f)\n", getBalance());
 			this.WithdrawalsAvailable--;
-			System.out.println("Withdrawn amount: " + amount);
+			System.out.printf("Withdrawn amount: %.2f\n",  amount);
 			System.out.println("Withdrawals Available after operation: "+ getWithdrawalsAvailable());
 		}
 	}
@@ -85,8 +85,8 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		  }
 		System.out.println("Depositing...");
 		Balance = Balance + amount;	
-		System.out.println("Deposited amount: " + amount);
-		System.out.printf("Current Balance: (%.2f)\n", getBalance());
+		System.out.printf("Deposited amount: %.2f\n",  amount);
+		System.out.printf("Current Balance: %.2f\n", getBalance());
 	}
 	
 	/*Accrued interest method*/

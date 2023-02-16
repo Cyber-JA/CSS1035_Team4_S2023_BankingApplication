@@ -26,8 +26,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		try {
 			this.setBalance(balance);
 		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception: " + e);
 		}
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
@@ -89,7 +88,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		if(amount <= 0 ) {
 			throw new InvalidAmountException(amount);
 		  }
-	  System.out.println("Withdrawing amount: " + amount + "...");
+		System.out.printf("Amount selected: %.2f\n",  amount);
 	 if(Balance-amount<0 && overdraftcounter==0) {  // checking if account will be overdrawn by withdrawal
 		 
 		 //final double fee = 2; //fee imposed to the first overdraft transaction  
@@ -102,7 +101,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	  }
 	 
 	  else if(Balance-amount>=0 && overdraftcounter==0) { //if not overdraft, proceed with the withdrawal
-		  System.out.println("Withdrawn amount: " + amount);
+		  System.out.printf("Withdrawn amount: %.2f\n",  amount);
 		  Balance = Balance - amount;
 		  this.applyWithdrawalsFee();
 		  if(this.getBalance() < 0) {
@@ -127,7 +126,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		  }
 	 System.out.println("Depositing...");
 	 Balance = Balance + amount;
-	 System.out.println("Deposited amount: " + amount);
+	 System.out.printf("Deposited amount: %.2f\n",  amount);
 	 if(Balance>=0) { //
 		 if(this.getOverdraftcounter() > 0)
 			 System.out.println("Overdraft restored.");
