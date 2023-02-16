@@ -3,6 +3,7 @@ public abstract class Account_S2023_SJUBank {
  
     protected java.util.Date dateCreated;
   	protected double Balance;
+  	private int UID;
  
 	  protected Account_S2023_SJUBank() {
 	    dateCreated = new java.util.Date();
@@ -16,6 +17,14 @@ public abstract class Account_S2023_SJUBank {
 
 	public double getBalance() {
 		return Balance;
+	}
+
+	public int getUID() {
+		return UID;
+	}
+
+	public void setUID(int uID) {
+		UID = uID;
 	}
 
 	public void setBalance(double balance) {
@@ -39,3 +48,4 @@ public abstract class Account_S2023_SJUBank {
 	  public abstract void deposit(double amount);
 
 }
+//TODO exceptions for amount inserted into setBalance, deposit, withdraw 

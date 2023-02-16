@@ -9,7 +9,6 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	private int WithdrawalsAvailable;
 	/*Annual interest rate*/
 	private double InterestRate;
-	
 	/**Constructor methods*/
 	Savings_S2023_SJUBank() {
 		this.setBalance(0);
@@ -94,3 +93,4 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	}
 	
 }
+//TODO excpetion for not enough withdraws available

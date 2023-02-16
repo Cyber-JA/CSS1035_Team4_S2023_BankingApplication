@@ -1,10 +1,6 @@
 /Account_S2023_SJUBank.class
-/BankTest.class
 /Checking_S2023_SJUBank.class
 /Savings_S2023_SJUBank.class
 /bankDriver.class
 /testCheckingAccount.class
 /testSavingsAccount.class
-/Database.class
-/database.class
-/InvalidAmountInserted.class

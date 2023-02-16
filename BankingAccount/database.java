@@ -57,17 +57,135 @@ public class database {
 			return result;
 	}
 	
-	public static void login(String Username, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, SQLException {
+	public static int login(String Username, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, SQLException {
 		String Uname = selectData(Username);
 		String Pwd = MD5hash(password);
 		if(Uname.contains(Pwd)) {
-			System.out.println("success");
+			return 1;
 		}
 		else {
 			System.out.println("wrong password");
-			System.out.println(Uname);
-			System.out.println(Pwd);
-			
+			return 0;
 		}
+	}
+	
+	public static int checkUID(String Username) throws SQLException {
+		int result = 0;
+		String connectionUrl =
+	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
+	                    + "database=SJUbank;"
+	                    + "user=sjubank@sjubank;"
+	                    + "password=vERY@iNSECURE@pASSWORD;"
+	                    + "encrypt=true;"
+	                    + "trustServerCertificate=false;"
+	                    + "loginTimeout=30;";
+	 	ResultSet resultSet = null;
+	    
+	        try (Connection connection = DriverManager.getConnection(connectionUrl);
+	                Statement statement = connection.createStatement();) {
+
+	            // Create and execute a SELECT SQL statement.
+	            String selectSql = "SELECT UserID FROM Userpass WHERE Username = ?";
+	            PreparedStatement stmt = connection.prepareStatement(selectSql);
+	            stmt.setString(1, Username);
+	            resultSet = stmt.executeQuery();
+	             resultSet.next();
+	            result = resultSet.getInt(1);
+	            // Print results from select statement
+	            
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+			return result;
+	}
+	
+	public static String checkAccountType(String Username) throws SQLException {
+		String result = null;
+		String connectionUrl =
+	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
+	                    + "database=SJUbank;"
+	                    + "user=sjubank@sjubank;"
+	                    + "password=vERY@iNSECURE@pASSWORD;"
+	                    + "encrypt=true;"
+	                    + "trustServerCertificate=false;"
+	                    + "loginTimeout=30;";
+	 	ResultSet resultSet = null;
+	    
+	        try (Connection connection = DriverManager.getConnection(connectionUrl);
+	                Statement statement = connection.createStatement();) {
+
+	            // Create and execute a SELECT SQL statement.
+	            String selectSql = "SELECT Accounttype FROM Userpass WHERE Username = ?";
+	            PreparedStatement stmt = connection.prepareStatement(selectSql);
+	            stmt.setString(1, Username);
+	            resultSet = stmt.executeQuery();
+	             resultSet.next();
+	            result = resultSet.getString(1);
+	            // Print results from select statement
+	            
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+			return result;
+	}
+	
+	public static int checkBalance(String Username) throws SQLException {
+		int result = 0;
+		String connectionUrl =
+	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
+	                    + "database=SJUbank;"
+	                    + "user=sjubank@sjubank;"
+	                    + "password=vERY@iNSECURE@pASSWORD;"
+	                    + "encrypt=true;"
+	                    + "trustServerCertificate=false;"
+	                    + "loginTimeout=30;";
+	 	ResultSet resultSet = null;
+	    
+	        try (Connection connection = DriverManager.getConnection(connectionUrl);
+	                Statement statement = connection.createStatement();) {
+
+	            // Create and execute a SELECT SQL statement.
+	            String selectSql = "SELECT Balance FROM Userpass WHERE Username = ?";
+	            PreparedStatement stmt = connection.prepareStatement(selectSql);
+	            stmt.setString(1, Username);
+	            resultSet = stmt.executeQuery();
+	             resultSet.next();
+	            result = resultSet.getInt(1);
+	            // Print results from select statement
+	            
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+			return result;
+	}
+	
+	public static void updateSQLBalance(String Username,double balance) throws SQLException {
+		int result = 0;
+		String connectionUrl =
+	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
+	                    + "database=SJUbank;"
+	                    + "user=sjubank@sjubank;"
+	                    + "password=vERY@iNSECURE@pASSWORD;"
+	                    + "encrypt=true;"
+	                    + "trustServerCertificate=false;"
+	                    + "loginTimeout=30;";
+	 	ResultSet resultSet = null;
+	    
+	        try (Connection connection = DriverManager.getConnection(connectionUrl);
+	                Statement statement = connection.createStatement();) {
+
+	            // Create and execute a SELECT SQL statement.
+	            String selectSql = "UPDATE Userpass SET Balance = "+ balance + " WHERE Username = ?";
+	            PreparedStatement stmt = connection.prepareStatement(selectSql);
+	            stmt.setString(1, Username);
+	            stmt.execute();
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+			//return result;
 	}
 }
