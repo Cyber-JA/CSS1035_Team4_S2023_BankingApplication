@@ -15,7 +15,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
 		this.setWithdrawalsFee(1);
-		System.out.printf("Checking account created. Current balance: (%.2f)\n", this.getBalance());
+		System.out.printf("Checking account created. Current balance: (%.2f)\n", this.getBalance());//to be removed
 	}
 
 	Checking_S2023_SJUBank(double balance) {
@@ -27,7 +27,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
 		this.setWithdrawalsFee(1);
-		System.out.printf("Checking account created. Current balance: (%.2f)\n", this.getBalance());
+		System.out.printf("Checking account created. Current balance: (%.2f)\n", this.getBalance());//to be removed
 	}
 	/*************/
 	

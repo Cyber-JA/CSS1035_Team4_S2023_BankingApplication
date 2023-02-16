@@ -14,7 +14,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		this.setBalance(0);
 		this.setWithdrawalsAvailable(2);
 		this.setInterestRate(0.01);
-		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());
+		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());//to be removed
 	}
 
 	Savings_S2023_SJUBank(double balance) {
@@ -27,7 +27,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 		
 		this.setWithdrawalsAvailable(2);
 		this.setInterestRate(0.01);
-		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());
+		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());//to be removed
 	}
 	
 	/*Interest rate getter and setter*/
