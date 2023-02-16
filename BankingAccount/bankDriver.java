@@ -24,6 +24,7 @@ public class bankDriver {
 		 System.out.println(Password);//to be removed
 		 Scanner selection = new Scanner(System.in);
 		 int choice = -1;
+		 
 		 if(database.login(Username,Password)==1) {
 			 System.out.println("Login successful");
 			 if(database.checkAccountType(Username).contains("Savings")) {
@@ -96,19 +97,18 @@ public class bankDriver {
 		 else {
 			 System.out.println("Login failed");
 		 }
-		 
-		 
-		 
 	}
 	
 	public static void setObjectVariablesSavings() throws SQLException {
 		accountS.setBalance(database.checkBalance(Username));
 		accountS.setUID(database.checkUID(Username));
+		//retrieve withdrawals available from db
 	}
 	
 	public static void setObjectVariablesCheckings() throws SQLException {
 		accountC.setBalance(database.checkBalance(Username));
 		accountC.setUID(database.checkUID(Username));
+		//retrieve overdraft from db
 	}
 	
 	public static void displayMenu() {

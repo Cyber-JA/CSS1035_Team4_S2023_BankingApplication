@@ -13,6 +13,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class database {
 	
+	private static String connectionUrl =
+            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
+                    + "database=SJUbank;"
+                    + "user=sjubank@sjubank;"
+                    + "password=vERY@iNSECURE@pASSWORD;"
+                    + "encrypt=true;"
+                    + "trustServerCertificate=false;"
+                    + "loginTimeout=30;";
+	
 	public static String MD5hash(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 			String x = password;
 			byte[] bytesOfMessage = x.getBytes("UTF-8");
@@ -28,14 +37,6 @@ public class database {
 	
 	public static String selectData(String Username) throws SQLException {
 		String result = null;
-		String connectionUrl =
-	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
-	                    + "database=SJUbank;"
-	                    + "user=sjubank@sjubank;"
-	                    + "password=vERY@iNSECURE@pASSWORD;"
-	                    + "encrypt=true;"
-	                    + "trustServerCertificate=false;"
-	                    + "loginTimeout=30;";
 	 	ResultSet resultSet = null;
 	    
 	        try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -71,14 +72,6 @@ public class database {
 	
 	public static int checkUID(String Username) throws SQLException {
 		int result = 0;
-		String connectionUrl =
-	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
-	                    + "database=SJUbank;"
-	                    + "user=sjubank@sjubank;"
-	                    + "password=vERY@iNSECURE@pASSWORD;"
-	                    + "encrypt=true;"
-	                    + "trustServerCertificate=false;"
-	                    + "loginTimeout=30;";
 	 	ResultSet resultSet = null;
 	    
 	        try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -102,14 +95,6 @@ public class database {
 	
 	public static String checkAccountType(String Username) throws SQLException {
 		String result = null;
-		String connectionUrl =
-	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
-	                    + "database=SJUbank;"
-	                    + "user=sjubank@sjubank;"
-	                    + "password=vERY@iNSECURE@pASSWORD;"
-	                    + "encrypt=true;"
-	                    + "trustServerCertificate=false;"
-	                    + "loginTimeout=30;";
 	 	ResultSet resultSet = null;
 	    
 	        try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -133,14 +118,6 @@ public class database {
 	
 	public static int checkBalance(String Username) throws SQLException {
 		int result = 0;
-		String connectionUrl =
-	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
-	                    + "database=SJUbank;"
-	                    + "user=sjubank@sjubank;"
-	                    + "password=vERY@iNSECURE@pASSWORD;"
-	                    + "encrypt=true;"
-	                    + "trustServerCertificate=false;"
-	                    + "loginTimeout=30;";
 	 	ResultSet resultSet = null;
 	    
 	        try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -164,14 +141,6 @@ public class database {
 	
 	public static void updateSQLBalance(String Username,double balance) throws SQLException {
 		int result = 0;
-		String connectionUrl =
-	            "jdbc:sqlserver://sjubank.database.windows.net:1433;"
-	                    + "database=SJUbank;"
-	                    + "user=sjubank@sjubank;"
-	                    + "password=vERY@iNSECURE@pASSWORD;"
-	                    + "encrypt=true;"
-	                    + "trustServerCertificate=false;"
-	                    + "loginTimeout=30;";
 	 	ResultSet resultSet = null;
 	    
 	        try (Connection connection = DriverManager.getConnection(connectionUrl);
