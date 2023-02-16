@@ -12,66 +12,102 @@ public class bankDriver {
 	static String Username = null;
 	static String Password = null;
 	public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException, InterruptedException {
-		//selectData("user");
-		//login("admin","letmei");
 		
-		//TODO implement methods from this code into the new SQL class file GIUSEPPE
-		Scanner in = new Scanner(System.in); //Remember to clean to buffer
-		System.out.println("Welcome to SJU bank, please enter your username followed by the enter key then your password followed by the enter key");
-		 Username = in.nextLine();  
-		 Password = in.nextLine();
-		 System.out.println(Username);//to be removed
-		 System.out.println(Password);//to be removed
-		 Scanner selection = new Scanner(System.in);
-		 int choice = -1;
-		//wrap into method
-		 if(database.login(Username,Password)==1) {
-			 System.out.println("Login successful");
-			//wrap into method
-			 if(database.checkAccountType(Username).contains("Savings")) {
+		/*this is the main method. here user input is obtained from cli and then processed*/
+		
+		try (Scanner in = new Scanner(System.in)) { //try-with-resource statement to free the buffer
+			System.out.println("Welcome to SJU bank, please enter your username followed by the enter key then your password followed by the enter key");
+			 Username = in.nextLine();  
+			 Password = in.nextLine();
+			 Scanner selection = new Scanner(System.in); //exiting from the try-catch statement will free the buffer
+			//login
+			 if(database.login(Username,Password)==1) {
+				 System.out.println("Login successful");
+				 //ATM-like menu
+				interactiveMenu(selection);
+			 }
+			 else {
+				 System.out.println("Login failed");
+			}
+		}
+	}
+	
+	/**
+	 * This method is used to retrieve data from db and setup the account*/
+	public static void setObjectVariablesSavings() throws SQLException {
+		try {
+			accountS.setBalance(database.checkBalance(Username));
+		} catch (InvalidAmountException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		accountS.setUID(database.checkUID(Username));
+		//needed to set withdrawals available
+	}
+	/** 
+	 * This method is used to retrieve data from db and setup the account*/
+	public static void setObjectVariablesCheckings() throws SQLException {
+		try {
+			accountC.setBalance(database.checkBalance(Username));
+		} catch (InvalidAmountException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		accountC.setUID(database.checkUID(Username));
+		//needed to set the correct overdraft
+	}
+	
+	/**
+	 * This method is used to display a general menu, common to savings and checking account*/
+	public static void displayMenu() {
+		 System.out.println("0. Exit");
+		 System.out.println("1. See Balance");
+		 System.out.println("2. Withdraw");
+		 System.out.println("3. Deposit");
+	}
+	/**
+	 * method specific for checking account, since it is possible to perform payments*/
+	public static void displayCheckingMenu() {
+		System.out.println("Please select a choice ranging from 0-4");
+		displayMenu();
+		System.out.println("4. Make payment");
+	}
+	
+	/**
+	 * This is the method in which is implemented the ATM-like menu and the process associated
+	 * The user is required to prompt a number in the range printed into the menu to perform
+	 * the corresponding action*/
+	public static void interactiveMenu(Scanner selection) {
+		try {
+			if(database.checkAccountType(Username).contains("Savings")) {
 				 System.out.println("Welcome to your account " + Username);
-				 System.out.println("Please select a choice ranging from 0-2");
+				 System.out.println("Please select a choice ranging from 0-3");
 				 displayMenu();
-				 setObjectVariablesSavings();
+				 try {
+					setObjectVariablesSavings();
+				} catch (SQLException e1) {
+					System.out.println(e1);
+				}
+				 int choice = -1;
 				 while(true) {
-					 choice = selection.nextInt();
+					  choice = selection.nextInt();
 					 if(choice == 0) {
-						//wrap into method
-						 System.out.println("Thanks for using SJU Bank Services!");
+						choice0();
 						 break;
 					 }
 					 if(choice==1) {
-						//wrap into method
-						 System.out.println("How much would you like to withdraw?");
-						 try {
-							accountS.withdraw(selection.nextFloat());
-						} catch (InvalidAmountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (WithdrawalsAvailableException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						 database.updateSQLBalance(Username,accountS.getBalance());
-						 //System.out.println(checkBalance(Username));
-						 System.out.println("Please select a choice ranging from 0-2");
-						 displayMenu();
+						 choice1Savings();
 						 continue;
 					 }
 					 if(choice==2) {
-						//wrap into method
-						 System.out.println("How much would you like to deposit?");
-						 try {
-							accountS.deposit(selection.nextFloat());
-						} catch (InvalidAmountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						 database.updateSQLBalance(Username,accountS.getBalance());
-						 System.out.println("Please select a choice ranging from 0-2");
-						 displayMenu();
+						 choice2Savings(selection);
 						 continue;
-						 
+					 }
+					 if(choice==3) {
+						 choice3Savings(selection);
+						 continue;
 					 }
 					 
 				 }
@@ -80,107 +116,134 @@ public class bankDriver {
 				 System.out.println("Welcome to your account " + Username);
 				 displayCheckingMenu();
 				 setObjectVariablesCheckings();
+				 
 				 while(true) {
-					 choice = selection.nextInt();
+					 int choice = selection.nextInt();
 					 if(choice == 0) {
-						 //wrap into method
-						 System.out.println("Thanks for using SJU Bank Services!");
+						 choice0();
 						 break;
 					 }
 					 if(choice==1) {
-						 //wrap into method
-						 System.out.println("How much would you like to withdraw?");
-						 try {
-							accountC.withdraw(selection.nextFloat());
-						} catch (InvalidAmountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (OverdraftAccountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						 database.updateSQLBalance(Username,accountC.getBalance());
-						 //System.out.println(checkBalance(Username));
-						 displayCheckingMenu();
+						 choice1Checking();
 						 continue;
 					 }
 					 if(choice==2) {
-						 //wrap into method
-						 System.out.println("How much would you like to deposit?");
-						 try {
-							accountC.deposit(selection.nextFloat());
-						} catch (InvalidAmountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						 database.updateSQLBalance(Username,accountC.getBalance());
-						 displayCheckingMenu();
+						 choice2Checking(selection);
 						 continue;
 						 
 					 }
 					 if(choice==3) {
-						//wrap into method
-						 System.out.println("How much would you like to pay");
-						 try {
-							accountC.makePayment(selection.nextFloat());
-						} catch (InvalidAmountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (OverdraftAccountException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						 database.updateSQLBalance(Username,accountC.getBalance());
-						 displayCheckingMenu();
+						choice3Checking(selection);
 						 continue;
-						 
+					 }
+					 if(choice==4) {
+						choice4Checking(selection);
+						 continue;
 					 }
 					 
 				 }
 			 }
-		 }
-		 else {
-			 System.out.println("Login failed");
-		 }
-	}
-	
-	public static void setObjectVariablesSavings() throws SQLException {
-		try {
-			accountS.setBalance(database.checkBalance(Username));
-		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e);
 		}
-		accountS.setUID(database.checkUID(Username));
-		//retrieve withdrawals available from db
 	}
 	
-	public static void setObjectVariablesCheckings() throws SQLException {
-		try {
-			accountC.setBalance(database.checkBalance(Username));
-		} catch (InvalidAmountException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	/**method to break from the menu*/
+	public static void choice0() {
+		System.out.println("Thanks for using SJU Bank Services!");
+	}
+	
+	/**wrapper to perform the withdraw from savings account*/
+	public static void choice2Savings(Scanner selection) {
+		 System.out.println("How much would you like to withdraw?");
+		 try {
+			accountS.withdraw(selection.nextFloat());
+			database.updateSQLBalance(Username,accountS.getBalance());
+		 } catch (InvalidAmountException e) {
+			System.out.println("Exception:" + e);
+		} catch (WithdrawalsAvailableException e) {
+			System.out.println("Exception:" + e);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Exception:" + e);
 		}
-		accountC.setUID(database.checkUID(Username));
-		//retrieve overdraft from db
+		 System.out.println("Please select a choice ranging from 0-3");
+		 displayMenu();
+	} 
+	
+	/**wrapper to perform the deposit into savings account*/
+	public static void choice3Savings(Scanner selection) {
+		 System.out.println("How much would you like to deposit?");
+		 try {
+			accountS.deposit(selection.nextFloat());
+			database.updateSQLBalance(Username,accountS.getBalance());
+		 } catch (InvalidAmountException e) {
+			 System.out.println(e);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		 System.out.println("Please select a choice ranging from 0-3");
+		 displayMenu();
 	}
 	
-	public static void displayMenu() {
-		 System.out.println("0. Exit");
-		 System.out.println("1. Withdraw");
-		 System.out.println("2. Deposit");
+	/**wrapper to perform the withdraw from checking account*/
+	public static void choice2Checking(Scanner selection) {
+		 System.out.println("How much would you like to withdraw?");
+		 try {
+			accountC.withdraw(selection.nextFloat());
+			database.updateSQLBalance(Username,accountC.getBalance());
+		 } catch (InvalidAmountException e) {
+			System.out.println("Exception:" + e);
+		} catch (OverdraftAccountException e) {
+			System.out.println("Exception:" + e);
+		} catch (SQLException e) {
+			System.out.println("Exception:" + e);
+		}
+		 displayCheckingMenu();
 	}
 	
-	public static void displayCheckingMenu() {
+	/**wrapper to perform the deposit into checking account*/
+	public static void choice3Checking(Scanner selection) {
+		 System.out.println("How much would you like to deposit?");
+		 try {
+			accountC.deposit(selection.nextFloat());
+			database.updateSQLBalance(Username,accountC.getBalance());
+		 } catch (InvalidAmountException e) {
+			System.out.println("Exception:" + e);
+		} catch (SQLException e) {
+			System.out.println("Exception:" + e);
+		}
+		 displayCheckingMenu();
+	} 
+	
+	/**wrapper to perform the payment linked to the checking account*/
+	public static void choice4Checking(Scanner selection) {
+		System.out.println("How much would you like to pay");
+		 try {
+			accountC.makePayment(selection.nextFloat());
+			database.updateSQLBalance(Username,accountC.getBalance());
+		 } catch (InvalidAmountException e) {
+			System.out.println(e);
+		} catch (OverdraftAccountException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+		 displayCheckingMenu();
+	} 
+	
+	/**
+	 * Wrapper for the method to check the balance into checking account*/
+	public static void choice1Checking() {
+			System.out.println("Balance: " + accountC.getBalance());
+		 displayCheckingMenu();
+	}
+	
+	/**
+	 * Wrapper for the method to check the balance into savings account*/
+	public static void choice1Savings() {
+		System.out.println("Balance: " + accountS.getBalance());
 		System.out.println("Please select a choice ranging from 0-3");
 		displayMenu();
-		System.out.println("3. Make payment");
 	}
+	
 }
