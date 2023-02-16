@@ -44,7 +44,15 @@ class testCheckingAccount {
 		/*account with initial 102$ dollar is created*/
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(102);
 		/*attempt to withdraw 1$. A fee (1$) is applied for withdrawals*/
-		acc1.withdraw(1);
+		try {
+			acc1.withdraw(1);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OverdraftAccountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
 		System.out.println("-----End Withdrawl Test-----\n");
@@ -56,7 +64,12 @@ class testCheckingAccount {
 		/*account with initial 0$ dollar is created*/
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(0);
 		/*attempt to deposit 100$.*/
-		acc1.deposit(100);
+		try {
+			acc1.deposit(100);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
 		System.out.println("-----End Deposit Test-----\n");
@@ -68,7 +81,15 @@ class testCheckingAccount {
 		/*account with initial 102$ dollar is created*/
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(102);
 		/*attempt to withdraw 103$.*/
-		acc1.withdraw(103);
+		try {
+			acc1.withdraw(103);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OverdraftAccountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*fees are applied (1$ for withdrawing and 2$ for overdraft)*/
 		/*expected amount is -4$*/
 		assertEquals(acc1.getBalance(), -4);
@@ -81,10 +102,18 @@ class testCheckingAccount {
 		/*account with initial 102$ dollar is created*/
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(102);
 		/*attempt to withdraw 103$.*/
-		acc1.withdraw(103);
-		/*attempt to withdraw when overdraft should not succeed*/
-		/*attempt to withdraw 1$.*/
-		acc1.withdraw(1);
+		try {
+			acc1.withdraw(103);
+			/*attempt to withdraw when overdraft should not succeed*/
+			/*attempt to withdraw 1$.*/
+			acc1.withdraw(1);
+		}catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OverdraftAccountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(acc1.getBalance(), -4);
 		System.out.println("-----End Withdrawl when overdraft Test-----\n");
 	}
@@ -95,9 +124,17 @@ class testCheckingAccount {
 		/*account with initial 102$ dollar is created*/
 		Checking_S2023_SJUBank acc1 = new Checking_S2023_SJUBank(102);
 		/*attempt to withdraw 103$. This will overdraft*/
-		acc1.withdraw(103);
-		/*attempt to restore the overdraft*/
-		acc1.deposit(5);
+		try {
+			acc1.withdraw(103);
+			/*attempt to restore the overdraft*/
+			acc1.deposit(5);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OverdraftAccountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 1$*/
 		assertEquals(acc1.getBalance(), 1);
 		System.out.println("-----End Restoring Overdraft Test-----\n");

@@ -11,7 +11,11 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 
 	/*Constructors*/
 	Checking_S2023_SJUBank() {
-		this.setBalance(0);
+		try {
+			this.setBalance(0);
+		} catch (InvalidAmountException e) {
+			this.Balance = 0;
+		}
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
 		this.setWithdrawalsFee(1);
@@ -19,11 +23,12 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	}
 
 	Checking_S2023_SJUBank(double balance) {
-		if(balance < 0) {
-			System.out.println("Invalid amount inserted. An account with 0$ will be created and a deposit can be executed.");
-		}
-		else
+		try {
 			this.setBalance(balance);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setOverdraftcounter(0);
 		this.setOverdraftFee(2);
 		this.setWithdrawalsFee(1);
@@ -76,12 +81,13 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	}
 
 
-  /** Withdraw method*/
+  /** Withdraw method
+ * @throws InvalidAmountException 
+ * @throws OverdraftAccountException */
   @Override
- public void withdraw(double amount) {
-	  if(amount <= 0 ) {
-			System.out.println("Error. Insert a valid amount.");  
-			return;
+ public void withdraw(double amount) throws InvalidAmountException, OverdraftAccountException {
+		if(amount <= 0 ) {
+			throw new InvalidAmountException(amount);
 		  }
 	  System.out.println("Withdrawing amount: " + amount + "...");
 	 if(Balance-amount<0 && overdraftcounter==0) {  // checking if account will be overdrawn by withdrawal
@@ -108,17 +114,17 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 	  }
 	  else if(overdraftcounter!=0) { //last possible case, if overdraft, cannot proceed with withdrawal
 		  
-		  System.out.println("Your account is overdrafted. Please restore your account to a positive balance to make another withdrawal.");
+		 throw new OverdraftAccountException(this.getOverdraftcounter());
 	  
 	  }
 }
- /** Deposit method*/
+ /** Deposit method
+ * @throws InvalidAmountException */
   @Override
- public void deposit(double amount) {
-	  if(amount <= 0 ) {
-		System.out.println("Error. Insert a valid amount.");  
-		return;
-	  }
+ public void deposit(double amount) throws InvalidAmountException {
+		if(amount <= 0 ) {
+			throw new InvalidAmountException(amount);
+		  }
 	 System.out.println("Depositing...");
 	 Balance = Balance + amount;
 	 System.out.println("Deposited amount: " + amount);
@@ -130,13 +136,20 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
  
  }
   
-  /** Method to perform payment with checking account*/
-  public void makePayment(double amount) {
-	  
-	if(this.Balance - amount < 0 && this.getOverdraftcounter() != 0) {
+  /** Method to perform payment with checking account
+ * @throws InvalidAmountException 
+ * @throws OverdraftAccountException */
+  public void makePayment(double amount) throws InvalidAmountException, OverdraftAccountException {
+	if(amount <= 0 ) {
+		throw new InvalidAmountException(amount);
+	  }
+	if(this.getOverdraftcounter() != 0 ) {
+		throw new OverdraftAccountException(this.getOverdraftcounter());
+	}
+	/*if(this.Balance - amount < 0) {
 		System.out.printf("Cannot process payment. Not enough founds: %.2f. Amount to pay: %.2f\n", this.getBalance(), amount);
 		return;
-	}
+	}*/
 	else if(this.Balance - amount < 0 && this.getOverdraftcounter() == 0) {
 		this.Balance -= amount;
 		System.out.println("Insufficient funds, a two dollar fee will be levied.");
@@ -153,3 +166,11 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
   
 }
 //TODO exception for overdrafted account
+class OverdraftAccountException extends Exception {
+	int overdraftCounter;
+	
+	OverdraftAccountException(int overdraftCounter) {
+		System.out.println("This account is overdrafted, restore it to positive balance to proceed");
+		this.overdraftCounter = overdraftCounter;
+	}
+}

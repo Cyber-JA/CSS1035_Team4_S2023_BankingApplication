@@ -24,9 +24,10 @@ public class bankDriver {
 		 System.out.println(Password);//to be removed
 		 Scanner selection = new Scanner(System.in);
 		 int choice = -1;
-		 System.out.println(database.retrieveDB());
+		//wrap into method
 		 if(database.login(Username,Password)==1) {
 			 System.out.println("Login successful");
+			//wrap into method
 			 if(database.checkAccountType(Username).contains("Savings")) {
 				 System.out.println("Welcome to your account " + Username);
 				 System.out.println("Please select a choice ranging from 0-2");
@@ -35,12 +36,22 @@ public class bankDriver {
 				 while(true) {
 					 choice = selection.nextInt();
 					 if(choice == 0) {
+						//wrap into method
 						 System.out.println("Thanks for using SJU Bank Services!");
 						 break;
 					 }
 					 if(choice==1) {
+						//wrap into method
 						 System.out.println("How much would you like to withdraw?");
-						 accountS.withdraw(selection.nextFloat());
+						 try {
+							accountS.withdraw(selection.nextFloat());
+						} catch (InvalidAmountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (WithdrawalsAvailableException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						 database.updateSQLBalance(Username,accountS.getBalance());
 						 //System.out.println(checkBalance(Username));
 						 System.out.println("Please select a choice ranging from 0-2");
@@ -48,8 +59,14 @@ public class bankDriver {
 						 continue;
 					 }
 					 if(choice==2) {
+						//wrap into method
 						 System.out.println("How much would you like to deposit?");
-						 accountS.deposit(selection.nextFloat());
+						 try {
+							accountS.deposit(selection.nextFloat());
+						} catch (InvalidAmountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						 database.updateSQLBalance(Username,accountS.getBalance());
 						 System.out.println("Please select a choice ranging from 0-2");
 						 displayMenu();
@@ -66,28 +83,53 @@ public class bankDriver {
 				 while(true) {
 					 choice = selection.nextInt();
 					 if(choice == 0) {
+						 //wrap into method
 						 System.out.println("Thanks for using SJU Bank Services!");
 						 break;
 					 }
 					 if(choice==1) {
+						 //wrap into method
 						 System.out.println("How much would you like to withdraw?");
-						 accountC.withdraw(selection.nextFloat());
+						 try {
+							accountC.withdraw(selection.nextFloat());
+						} catch (InvalidAmountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (OverdraftAccountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						 database.updateSQLBalance(Username,accountC.getBalance());
 						 //System.out.println(checkBalance(Username));
 						 displayCheckingMenu();
 						 continue;
 					 }
 					 if(choice==2) {
+						 //wrap into method
 						 System.out.println("How much would you like to deposit?");
-						 accountC.deposit(selection.nextFloat());
+						 try {
+							accountC.deposit(selection.nextFloat());
+						} catch (InvalidAmountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						 database.updateSQLBalance(Username,accountC.getBalance());
 						 displayCheckingMenu();
 						 continue;
 						 
 					 }
 					 if(choice==3) {
+						//wrap into method
 						 System.out.println("How much would you like to pay");
-						 accountC.makePayment(selection.nextFloat());
+						 try {
+							accountC.makePayment(selection.nextFloat());
+						} catch (InvalidAmountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (OverdraftAccountException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						 database.updateSQLBalance(Username,accountC.getBalance());
 						 displayCheckingMenu();
 						 continue;
@@ -103,13 +145,29 @@ public class bankDriver {
 	}
 	
 	public static void setObjectVariablesSavings() throws SQLException {
-		accountS.setBalance(database.checkBalance(Username));
+		try {
+			accountS.setBalance(database.checkBalance(Username));
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		accountS.setUID(database.checkUID(Username));
 		//retrieve withdrawals available from db
 	}
 	
 	public static void setObjectVariablesCheckings() throws SQLException {
-		accountC.setBalance(database.checkBalance(Username));
+		try {
+			accountC.setBalance(database.checkBalance(Username));
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		accountC.setUID(database.checkUID(Username));
 		//retrieve overdraft from db
 	}

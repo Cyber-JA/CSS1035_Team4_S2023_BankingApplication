@@ -27,8 +27,12 @@ public abstract class Account_S2023_SJUBank {
 		UID = uID;
 	}
 
-	public void setBalance(double balance) {
-		Balance = balance;
+	public void setBalance(double balance) throws InvalidAmountException {
+		if(balance < 0) {
+			throw new InvalidAmountException(balance);
+		}
+		else
+			Balance = balance;
 	}
 
 	/** Get dateCreated */
@@ -41,11 +45,21 @@ public abstract class Account_S2023_SJUBank {
 	    return "created on " + dateCreated;
 	  }
 	
-	  /** Abstract method withdraw */
-	  public abstract void withdraw(double amount);
+	  /** Abstract method withdraw 
+	 * @throws WithdrawalsAvailableException 
+	 * @throws OverdraftAccountException */
+	  public abstract void withdraw(double amount) throws InvalidAmountException, WithdrawalsAvailableException, OverdraftAccountException;
 	  
 	  /** Abstract method deposit */
-	  public abstract void deposit(double amount);
+	  public abstract void deposit(double amount) throws InvalidAmountException;
 
 }
-//TODO exceptions for amount inserted into setBalance, deposit, withdraw 
+
+class InvalidAmountException extends Exception {
+	double amount;
+	
+	 InvalidAmountException(double amount) {
+		System.out.println("Invalid amount inserted: ." + amount);
+		this.amount = amount;
+	}
+}

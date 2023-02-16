@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.io.UnsupportedEncodingException;
@@ -156,23 +157,5 @@ public class database {
 	            e.printStackTrace();
 	        }
 			//return result;
-	}
-	
-	public static ResultSet retrieveDB() throws SQLException {
-		int result = 0;
-	 	ResultSet resultSet = null;
-	    
-	        try (Connection connection = DriverManager.getConnection(connectionUrl);
-	                Statement statement = connection.createStatement();) {
-
-	            // Create and execute a SELECT SQL statement.
-	            String selectSql = "SELECT * FROM Userpass";
-	            PreparedStatement stmt = connection.prepareStatement(selectSql);
-	            resultSet = stmt.executeQuery();
-	        }
-	        catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-			return resultSet;
 	}
 }

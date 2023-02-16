@@ -45,7 +45,15 @@ class testSavingsAccount {
 		/*account with initial 102$ dollar is created*/
 		Savings_S2023_SJUBank acc1 = new Savings_S2023_SJUBank(102);
 		/*attempt to withdraw 1$. No fee is applied for withdrawals*/
-		acc1.withdraw(1);
+		try {
+			acc1.withdraw(1);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WithdrawalsAvailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 101$*/
 		assertEquals(acc1.getBalance(), 101);
 		System.out.println("-----End Withdrawl Test-----\n");
@@ -57,7 +65,12 @@ class testSavingsAccount {
 		/*account with initial 0$ dollar is created*/
 		Savings_S2023_SJUBank acc1 = new Savings_S2023_SJUBank(0);
 		/*attempt to deposit 100$.*/
-		acc1.deposit(100);
+		try {
+			acc1.deposit(100);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
 		System.out.println("-----End Deposit Test-----\n");
@@ -69,7 +82,15 @@ class testSavingsAccount {
 		/*account with initial 102$ dollars is created*/
 		Savings_S2023_SJUBank acc1 = new Savings_S2023_SJUBank(102);
 		/*attempt to withdraw 103$ that should not succeed. No fee is applied for withdrawals*/
-		acc1.withdraw(103);
+		try {
+			acc1.withdraw(103);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WithdrawalsAvailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 102$*/
 		assertEquals(acc1.getBalance(), 102);
 		System.out.println("-----End Withdrawl Test-----\n");
@@ -80,12 +101,20 @@ class testSavingsAccount {
 		System.out.println("-----Testing Savings Exceed Withdrawls Available-----");
 		/*account with initial 102$ dollar is created*/
 		Savings_S2023_SJUBank acc1 = new Savings_S2023_SJUBank(102);
-		/*attempt to withdraw 1$. No fee is applied for withdrawals*/
-		acc1.withdraw(1);
-		/*attempt to withdraw 1$. No fee is applied for withdrawals*/
-		acc1.withdraw(1);
-		/*attempt to withdraw 1$ but this should not succed. No fee is applied for withdrawals*/
-		acc1.withdraw(1);
+		try {
+			/*attempt to withdraw 1$. No fee is applied for withdrawals*/
+			acc1.withdraw(1);
+			/*attempt to withdraw 1$. No fee is applied for withdrawals*/
+			acc1.withdraw(1);
+			/*attempt to withdraw 1$. No fee is applied for withdrawals*/
+			acc1.withdraw(1);
+		} catch (InvalidAmountException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WithdrawalsAvailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/*expected amount is 100$*/
 		assertEquals(acc1.getBalance(), 100);
 		System.out.println("-----End Exceed Withdrawls Available-----\n");

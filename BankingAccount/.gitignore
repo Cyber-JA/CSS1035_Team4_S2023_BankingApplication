@@ -8,3 +8,7 @@
 /Database.class
 /database.class
 /InvalidAmountInserted.class
+/InvalidAmountException.class
+/WithdrawalsAvailableException.class
+/OverdraftAccountException.class
+/testDatabase.class

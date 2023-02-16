@@ -9,23 +9,26 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	private int WithdrawalsAvailable;
 	/*Annual interest rate*/
 	private double InterestRate;
-	/**Constructor methods*/
+	/**Constructor methods
+	 * @throws InvalidAmountException */
 	Savings_S2023_SJUBank() {
-		this.setBalance(0);
-		this.setWithdrawalsAvailable(2);
+		try {
+			this.setBalance(0);
+		} catch (InvalidAmountException e) {
+			this.Balance = 0;
+		}
+		this.setWithdrawalsAvailable(2); //should be retrieved by the db
 		this.setInterestRate(0.01);
 		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());//to be removed
 	}
 
 	Savings_S2023_SJUBank(double balance) {
-		if(balance < 0) {
-			System.out.println("Invalid amount inserted. An account with 0$ will be created and a deposit can be executed.");
-			this.setBalance(0);
-		}
-		else
+		try {
 			this.setBalance(balance);
-		
-		this.setWithdrawalsAvailable(2);
+		} catch (InvalidAmountException e) {
+			e.printStackTrace();
+		}
+		this.setWithdrawalsAvailable(2); //should be retrieved by the db
 		this.setInterestRate(0.01);
 		System.out.printf("Savings account created. Current balance: (%.2f)\n", this.getBalance());//to be removed
 	}
@@ -50,20 +53,20 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	}
 	/****************************************/
 	
-	/** Withdraw method*/
+	/** Withdraw method
+	 * @throws WithdrawalsAvailableException */
 	@Override
-	public void withdraw(double amount) {
+	public void withdraw(double amount) throws InvalidAmountException, WithdrawalsAvailableException {
 		if(amount <= 0 ) {
-			System.out.println("Error. Insert a valid amount.");  
-			return;
+			throw new InvalidAmountException(amount);
 		  }
 		System.out.println("Withdrawing amount: " + amount + "...");
 		if(Balance-amount<0) {
 		  System.out.println("Insufficient funds");
 		}
-		else if(this.getWithdrawalsAvailable() == 0) {
-			System.out.println("Cannot proceed. Available withdraw: "+ getWithdrawalsAvailable());
-		}
+		else if(this.getWithdrawalsAvailable() == 0 ) {
+			throw new WithdrawalsAvailableException(this.getWithdrawalsAvailable());
+		 }
 		
 		else {
 			Balance = Balance - amount;
@@ -76,10 +79,9 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	
 	/** Deposit method*/
 	@Override
-	public void deposit(double amount) {
+	public void deposit(double amount) throws InvalidAmountException {
 		if(amount <= 0 ) {
-			System.out.println("Error. Insert a valid amount.");  
-			return;
+			throw new InvalidAmountException(amount);
 		  }
 		System.out.println("Depositing...");
 		Balance = Balance + amount;	
@@ -94,3 +96,11 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	
 }
 //TODO excpetion for not enough withdraws available
+class WithdrawalsAvailableException extends Exception {
+	int withdrawalsAvailable;
+	
+	 WithdrawalsAvailableException(int withdrawalsAvailable) {
+		System.out.println("Withdrawals available: " + withdrawalsAvailable);
+		this.withdrawalsAvailable = withdrawalsAvailable;
+	}
+}
