@@ -67,7 +67,8 @@ public class database {
 	            
 	        }
 	        catch (SQLException e) {
-	            e.printStackTrace();
+	            System.out.println("Cannot find a result");
+	            return "";
 	        }
 			return result;
 	}
@@ -79,7 +80,7 @@ public class database {
 	public static int login(String Username, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, SQLException {
 		String Uname = selectData(Username);
 		String Pwd = MD5hash(password);
-		if(Uname.contains(Pwd)) {
+		if(Uname.isEmpty() && Uname.contains(Pwd)) {
 			return 1;
 		}
 		else {
