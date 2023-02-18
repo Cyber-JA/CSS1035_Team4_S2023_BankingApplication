@@ -29,6 +29,7 @@ public class bankDriver {
 				interactiveMenu(selection);
 			 }
 			 else {
+				 System.out.println(database.login(Username, Password));
 				 System.out.println("Login failed");
 			}
 		}
