@@ -112,6 +112,8 @@ public class bankDriver {
 						 choice3Savings(selection);
 						 continue;
 					 }
+					 else
+						 invalidChoice();
 					 
 				 }
 			 }
@@ -143,6 +145,8 @@ public class bankDriver {
 						choice4Checking(selection);
 						 continue;
 					 }
+					 else
+						 invalidChoice();
 					 
 				 }
 			 }
@@ -247,6 +251,10 @@ public class bankDriver {
 		System.out.println("Balance: " + accountS.getBalance());
 		System.out.println("Please select a choice ranging from 0-3");
 		displayMenu();
+	}
+	
+	public static void invalidChoice() {
+		System.out.println("Insert a valid command...");
 	}
 	
 }
