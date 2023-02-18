@@ -55,6 +55,10 @@ public abstract class Account_S2023_SJUBank {
 
 }
 
+/**
+ * This exception was defined to manage issues with negative inputs for the "withdraw" and "deposit" methods. A negative
+ * amount is not accepted, hence is managed by throwing such exception.
+ */
 class InvalidAmountException extends Exception {
 	double amount;
 	

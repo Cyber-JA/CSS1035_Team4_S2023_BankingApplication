@@ -95,7 +95,10 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 	}
 	
 }
-//TODO excpetion for not enough withdraws available
+/**
+ * This exception is defined to manage issues in case the number of withdrawals available is = 0, hence this is thrown 
+ * if the user try to perform such action under the condition just specified
+ */
 class WithdrawalsAvailableException extends Exception {
 	int withdrawalsAvailable;
 	

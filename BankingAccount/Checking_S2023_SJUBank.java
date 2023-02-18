@@ -164,7 +164,10 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
   }
   
 }
-//TODO exception for overdrafted account
+/**
+ * This exception is used in case in which the account is overdrafted. In this case, the withdrawal cannot be done, hence
+ * this exception will be thrown. 
+ */
 class OverdraftAccountException extends Exception {
 	int overdraftCounter;
 	
