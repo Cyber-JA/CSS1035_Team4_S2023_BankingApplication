@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.JLabel;
+
 /**
  * Class implementing the connection with the database and it's used
  * functionalities The Database contains a table named Userpass, in which
@@ -33,6 +35,7 @@ public class database {
       + "encrypt=true;" 
         + "trustServerCertificate=false;" 
           + "loginTimeout=30;";
+  
 
   /**
    * function used to compute the MD5 hash over the password. This is then used to
@@ -54,6 +57,7 @@ public class database {
    */
   public static String md5hash(String password) 
       throws UnsupportedEncodingException, NoSuchAlgorithmException {
+	  
     String x = password;
     byte[] bytesOfMessage = x.getBytes("UTF-8");
     MessageDigest md = MessageDigest.getInstance("MD5");
