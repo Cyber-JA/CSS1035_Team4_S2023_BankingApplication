@@ -7,6 +7,10 @@ package bankingAccount;
 public class WithdrawalsAvailableException extends Exception {
 
   private static final long serialVersionUID = 1L;
+  
+  /**
+   * Number of withdrawals available that generated the exception. 
+   */
   int withdrawalsAvailable;
 
   WithdrawalsAvailableException(int withdrawalsAvailable) {

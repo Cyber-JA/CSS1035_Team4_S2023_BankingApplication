@@ -1,5 +1,9 @@
 package bankingAccount;
 
+/**
+ * Class used to implement the savings account functionalities.
+ * This extends the Account superclass. 
+ */
 public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 
   /** 
@@ -48,20 +52,42 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
     System.out.printf("Savings account created.\n"); 
   }
 
-  /* Interest rate getter and setter */
+  /** 
+   * interest rate Getter 
+   * 
+   * @return InterestRate
+   * Returns the set interest rate applied from the bank.
+   */
   public double getInterestRate() {
     return InterestRate;
   }
 
+  /**
+   * interest rate Setter
+   * 
+   * @param interestRate
+   * Value used to set interest rate from the bank.
+   */
   public void setInterestRate(double interestRate) {
     InterestRate = interestRate;
   }
 
-  /* WithdrawalsAvailable getter and setter */
+  /** 
+   * withdrawalsAvailable Getter 
+   * 
+   * @return WithdrawalsAvailable
+   * Returns the Withdrawals Available for this account.
+   */
   public int getWithdrawalsAvailable() {
     return WithdrawalsAvailable;
   }
-
+  
+  /**
+   * withdrawalsAvailable Setter
+   * 
+   * @param withdrawalsAvailable
+   * Value used to set withdrawals available for this account.
+   */
   public void setWithdrawalsAvailable(int withdrawalsAvailable) {
     this.WithdrawalsAvailable = withdrawalsAvailable;
   }
@@ -124,7 +150,10 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
     System.out.printf("Current Balance: %.2f\n", getBalance());
   }
 
-  /* Accrued interest method */
+  /** 
+   * Accrued interest method 
+   *  Method displaying the forecast accrued interest.
+   */
   public void computeAccruedInterest() {
     System.out.println("Accrued interest forecast: " + this.getBalance() * this.getInterestRate());
   }

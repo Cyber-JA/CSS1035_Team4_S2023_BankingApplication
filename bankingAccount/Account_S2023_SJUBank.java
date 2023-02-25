@@ -1,5 +1,9 @@
 package bankingAccount;
 
+/**
+ * This is the superclass from which the savings and checking account are derived. 
+ */
+
 public abstract class Account_S2023_SJUBank {
 
   protected java.util.Date dateCreated;
@@ -22,20 +26,48 @@ public abstract class Account_S2023_SJUBank {
     this.dateCreated = new java.util.Date();
     Balance = balance;
   }
-
+  
+  /**
+   * Getter used to retrieve the balance of the instance.
+   * 
+   * @return Balance
+   * Actual amount into the account
+   */
   public double getBalance() {
     return Balance;
   }
-
+  
+  /**
+   * Getter used to retrieve the User ID of the account's owner.
+   * 
+   * @return UID
+   * Actual identifier of the owner.
+   */
   public int getUID() {
     return UID;
   }
 
+  /**
+   * Setter used to assign the user ID of the account's owner.
+   * 
+   * Actual amount into the account
+   * 
+   * @param uid
+   * User ID to set.
+   */
   public void setUID(int uid) {
     UID = uid;
   }
   /**
    * Method used to set the balance in the account.
+   * 
+   * @param balance
+   * Used to set the balance into the account to the received value.
+   * 
+   * @throws InvalidAmountException
+   * Exception thrown when the amount is not valid in this context
+   * 
+   * @see InvalidAmountException
    */
   public void setBalance(double balance) throws InvalidAmountException {
     if (balance < 0) {
@@ -44,11 +76,22 @@ public abstract class Account_S2023_SJUBank {
       Balance = balance;
   }
 
-  /* Get dateCreated. */
+  /**
+   *  Get dateCreated.
+   *  
+   *  @return dateCreated
+   *  Returns the date of the creation of the account.
+   */
   public java.util.Date getDateCreated() {
     return dateCreated;
   }
 
+  /**
+   * Method used to display the creation date of the account.
+   * 
+   * @return String
+   * String returned with the information required.
+   */
   @Override
   public String toString() {
     return "created on " + dateCreated;

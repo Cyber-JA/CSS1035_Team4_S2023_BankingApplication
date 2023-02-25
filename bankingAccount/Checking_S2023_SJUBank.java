@@ -1,5 +1,9 @@
 package bankingAccount;
 
+/**
+ * Class implementing the functionalities of the checking account.
+ * Extends the Account superclass. 
+ */
 public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
   /* Starting Balance of the Checking account */
   // thanks to the superclass, balance is available //private double Balance;
@@ -47,29 +51,63 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
     System.out.printf("Checking account created.\n");
   }
 
-  /* overdraftFee Getter and Setter */
+  /** 
+   * overdraftFee Getter 
+   * 
+   * @return overdraftFee
+   * Returns the set fee amount when the account overdrafts.
+   */
   public double getOverdraftFee() {
     return overdraftFee;
   }
 
+  
+  /**
+   * overdraftFee Setter
+   * 
+   * @param overdraftFee
+   * Value used to set the amount of fee applied into overdrafting the account.
+   */
   public void setOverdraftFee(double overdraftFee) {
     this.overdraftFee = overdraftFee;
   }
 
-  /* Overdraftcounter getter and setter */
+  /** 
+   * overdraftCounter Getter 
+   * 
+   * @return overdraftcounter
+   * Returns the overdraft actual counter.
+   */
   public int getOverdraftcounter() {
     return overdraftcounter;
   }
 
+  /**
+   * overdraftcounter Setter
+   * 
+   * @param overdraftcounter
+   * Value used to set the overdraftcounter when overdrafting the account.
+   */
   public void setOverdraftcounter(int overdraftcounter) {
     this.overdraftcounter = overdraftcounter;
   }
 
-  /* WithdrawalsFee getter and setter */
+  /** 
+   * withdrawals fee Getter 
+   * 
+   * @return WithdrawalsFee
+   * Returns the fee applied whtn withdrawing.
+   */
   public double getWithdrawalsFee() {
     return WithdrawalsFee;
   }
 
+  /**
+   * withdrawals fee Setter
+   * 
+   * @param withdrawalsFee
+   * Value used to set the fee applied when withdrawing.
+   */
   public void setWithdrawalsFee(double withdrawalsFee) {
     WithdrawalsFee = withdrawalsFee;
   }

@@ -1,7 +1,12 @@
 package bankingAccount;
 
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.Scanner;
+
 /**
-* <h1>Welcome into the SJUBank!</h1>
 * The bankDriver program implements an application that
 * allows for a bank-user interaction.
 *
@@ -10,11 +15,6 @@ package bankingAccount;
 * @since   2023-02-24 
 */
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.Scanner;
-
 public class bankDriver {
 
   static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
@@ -22,15 +22,34 @@ public class bankDriver {
   static String Username = null;
   static String Password = null;
 
-  /************** MAIN METHOD. *************/
+  /* MAIN METHOD. */
+  
+  /**
+   * this is the main method. here user input is obtained from cli and then
+   * processed
+   * 
+   * @param args
+   * Can be used to pass arguments to the main method.
+   * 
+   * @throws NoSuchAlgorithmException
+   * Exception thrown in case of error related to hash algorithms used into the program, performing the login.
+   * 
+   * @throws SQLException
+   * Exception thrown in case of wrong SQL request.
+   * 
+   * @throws IOException
+   * Exception thrown in case of wrong IO operations.
+   * 
+   * @see SQLException
+   * 
+   * @see IOException
+   * 
+   * @see NoSuchAlgorithmException
+   */
+
   public static void main(String[] args)
-      throws NoSuchAlgorithmException, SQLException, IOException, InterruptedException {
-
-    /*
-     * this is the main method. here user input is obtained from cli and then
-     * processed
-     */
-
+      throws NoSuchAlgorithmException, SQLException, IOException {
+	  
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer
       System.out.println(
           "Welcome to SJU bank, please enter your username "
@@ -51,9 +70,13 @@ public class bankDriver {
     }
   }
 
-  /*
+  /**
    * This method is used to retrieve data from db and setup the account.
    * 
+   * @throws SQLException
+   * Exception thrown in case of wrong SQL request.
+   * 
+   * @see SQLException
    */
   public static void setObjectVariablesSavings() throws SQLException {
     try {
@@ -67,8 +90,13 @@ public class bankDriver {
     // needed to set withdrawals available
   }
 
-  /*
+  /**
    * This method is used to retrieve data from db and setup the account.
+   * 
+   * @throws SQLException
+   * Exception thrown in case of wrong SQL request.
+   * 
+   * @see SQLException
    */
   public static void setObjectVariablesCheckings() throws SQLException {
     try {
@@ -82,7 +110,7 @@ public class bankDriver {
     // needed to set the correct overdraft
   }
 
-  /*
+  /**
    * This method is used to display a general menu, common to savings and checking
    * account.
    */
@@ -93,7 +121,7 @@ public class bankDriver {
     System.out.println("3. Deposit");
   }
 
-  /*
+  /**
    * method specific for checking account, since it is possible to perform
    * payments.
    */
@@ -103,10 +131,13 @@ public class bankDriver {
     System.out.println("4. Make payment");
   }
 
-  /*
+  /**
    * This is the method in which is implemented the ATM-like menu and the process
    * associated The user is required to prompt a number in the range printed into
    * the menu to perform the corresponding action.
+   * 
+   * @param selection 
+   * Used to manage the user input.
    */
   public static void interactiveMenu(Scanner selection) {
     try {
@@ -178,12 +209,19 @@ public class bankDriver {
     }
   }
 
-  /* method to break from the menu. */
+  /** 
+   * Method to break from the menu. 
+   */
   public static void choice0() {
     System.out.println("Thanks for using SJU Bank Services!");
   }
 
-  /* wrapper to perform the withdraw from savings account. */
+  /** 
+   * Wrapper to perform the withdraw from savings account. 
+   *  
+   * @param selection 
+   * Used to manage the user input.
+   */
   public static void choice2Savings(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
@@ -200,7 +238,12 @@ public class bankDriver {
     displayMenu();
   }
 
-  /* wrapper to perform the deposit into savings account. */
+  /** 
+   * Wrapper to perform the deposit into savings account.
+   * 
+   * @param selection 
+   * Used to manage the user input.
+   */
   public static void choice3Savings(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
@@ -215,7 +258,12 @@ public class bankDriver {
     displayMenu();
   }
 
-  /* wrapper to perform the withdraw from checking account. */
+  /**
+   *  Wrapper to perform the withdraw from checking account. 
+   *  
+   * @param selection 
+   * Used to manage the user input.
+   */
   public static void choice2Checking(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
@@ -231,7 +279,12 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /* wrapper to perform the deposit into checking account. */
+  /** 
+   * Wrapper to perform the deposit into checking account.
+   * 
+   * @param selection 
+   * Used to manage the user input.
+   */
   public static void choice3Checking(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
@@ -245,7 +298,12 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /* wrapper to perform the payment linked to the checking account. */
+  /** 
+   * Wrapper to perform the payment linked to the checking account. 
+   * 
+   * @param selection 
+   * Used to manage the user input.
+   */
   public static void choice4Checking(Scanner selection) {
     System.out.println("How much would you like to pay");
     try {
@@ -261,7 +319,7 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /*
+  /**
    * Wrapper for the method to check the balance into checking account.
    */
   public static void choice1Checking() {
@@ -269,7 +327,7 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /*
+  /**
    * Wrapper for the method to check the balance into savings account.
    */
   public static void choice1Savings() {
@@ -277,7 +335,9 @@ public class bankDriver {
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
   }
-
+  /**
+   * Method to manage an invalid choice from the menu.
+   */
   public static void invalidChoice() {
     System.out.println("Insert a valid command...");
   }

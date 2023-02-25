@@ -7,6 +7,10 @@ package bankingAccount;
 public class OverdraftAccountException extends Exception {
 
   private static final long serialVersionUID = 1L;
+  
+  /**
+   * Counter's value that generated the exception. 
+   */
   int overdraftCounter;
 
   OverdraftAccountException(int overdraftCounter) {

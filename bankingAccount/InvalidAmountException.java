@@ -8,6 +8,10 @@ package bankingAccount;
 public class InvalidAmountException extends Exception {
  
   private static final long serialVersionUID = 1L;
+  
+  /**
+   * Amount that generated the exception.
+   */
   double amount;
 
   InvalidAmountException(double amount) {
