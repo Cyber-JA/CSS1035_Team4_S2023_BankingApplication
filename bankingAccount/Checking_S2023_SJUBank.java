@@ -3,17 +3,21 @@ package bankingAccount;
 public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
   /* Starting Balance of the Checking account */
   // thanks to the superclass, balance is available //private double Balance;
-  /*
+  /**
    * Overdraft is possible but only once. To perform a new one it is needed to
-   * have a positive balance
+   * have a positive balance.
    */
   private int overdraftcounter;
-  /* A fee is applied when overdraft */
+  /**
+   * This is the fee applied when the account gets overdrafted.
+   */
   private double overdraftFee;
-  /* ATM withdrawal fee */
+  /**
+   *  ATM withdrawal fee 
+   */
   private double WithdrawalsFee;
 
-  /* Constructors */
+  /** Constructor */
   Checking_S2023_SJUBank() {
     try {
       this.setBalance(0);
@@ -25,7 +29,12 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
     this.setWithdrawalsFee(1);
     System.out.printf("Checking account created.\n"); 
   }
-
+  
+  /** Constructor 
+   * 
+   * @param balance
+   * This is the initial amount set at the creation of the checking account.
+   */
   Checking_S2023_SJUBank(double balance) {
     try {
       this.setBalance(balance);
@@ -81,10 +90,21 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 
   /**
    * Withdraw method.
-   *
-   * @throwsInvalidAmountException
    * 
-   * @throwsOverdraftAccountException
+   * @param amount
+   * This is the amount that the user wants to withdraw from the checking account.
+   * It is possible to perform as many withdrawals as wanted, until the amount and/or the 
+   * overdraft constraints allow it.
+   * 
+   * @see InvalidAmountException
+   * 
+   * @see OverdraftAccountException
+   *
+   * @throws InvalidAmountException
+   * Exception thrown when the amount is not correct in the context..
+   * 
+   * @throws OverdraftAccountException
+   * Exception thrown when the account is overdrafted and a withdrawal is requested.
    */
   @Override
   public void withdraw(double amount) throws InvalidAmountException, OverdraftAccountException {
@@ -122,8 +142,12 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 
   /**
    * Deposit method.
+   * 
+   * @param amount 
+   * This is the amount that the owner wants to deposit into the checking account.
    *
-   * @throwsInvalidAmountException
+   * @throws InvalidAmountException
+   * Exception thrown when the amount is not correct in the context.
    */
   @Override
   public void deposit(double amount) throws InvalidAmountException {
@@ -143,10 +167,19 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
 
   /**
    * Method to perform payment with checking account.
+   * 
+   * @param amount
+   * This is the amount that the payment requires.
+   * 
+   * @see InvalidAmountException
+   * 
+   * @see OverdraftAccountException
    *
-   * @throwsInvalidAmountException
+   * @throws InvalidAmountException
+   * Exception thrown when the amount is not correct in the context.
    *
-   * @throwsOverdraftAccountException
+   * @throws OverdraftAccountException
+   * Exception thrown when the account is overdrafted and a withdrawal is requested.
    */
   public void makePayment(double amount) throws InvalidAmountException, OverdraftAccountException {
     if (amount <= 0) {
@@ -169,19 +202,4 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
     }
   }
 
-}
-
-/**
- * This exception is used in case in which the account is overdrafted. In this
- * case, the withdrawal cannot be done, hence this exception will be thrown.
- */
-class OverdraftAccountException extends Exception {
-
-  private static final long serialVersionUID = 1L;
-  int overdraftCounter;
-
-  OverdraftAccountException(int overdraftCounter) {
-    System.out.println("This account is overdrafted, restore it to positive balance to proceed");
-    this.overdraftCounter = overdraftCounter;
-  }
 }

@@ -2,19 +2,19 @@ package bankingAccount;
 
 public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
 
-  /* Starting Balance of the Savings account */
-  // thanks to the superclass, balance is available
-  // as well as Balance's getter and setter
-  // private double Balance;
-  /* Only a limited number of withdrawal per month is possible */
+  /** 
+  * Only a limited number of withdrawal per month is possible 
+  */
   private int WithdrawalsAvailable;
-  /* Annual interest rate */
+  /** 
+   * Annual interest rate 
+   */
   private double InterestRate;
 
   /**
    * Constructor methods.
-   *
-   * @throwsInvalidAmountException
+   * 
+   * @param no param is provided, hence the Balance is set to 0.
    */
   Savings_S2023_SJUBank() {
     try {
@@ -26,7 +26,17 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
     this.setInterestRate(0.01);
     System.out.printf("Savings account created.\n");
   }
-
+  
+  /**
+   * Constructor methods.
+   *
+   * @throws InvalidAmountException
+   * Exception thrown when the amount is not correct in the context.
+   * 
+   * @see InvalidAmountException
+   * 
+   * @param balance is the initial amount deposited into the account.
+   */
   Savings_S2023_SJUBank(double balance) {
     try {
       this.setBalance(balance);
@@ -59,7 +69,19 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
   /**
    * Withdraw method.
    *
-   * @throwsWithdrawalsAvailableException
+   * @throws WithdrawalsAvailableException 
+   * Exception thrown if the number of withdrawals available
+   * is exhausted.
+   * 
+   * @throws InvalidAmountException 
+   * Exception thrown when the amount is not correct in the context.
+   * 
+   * @see InvalidAmountException
+   * 
+   * @see WithdrawalsAvailableException
+   * 
+   * @param amount is the parameter received by the method to perform the withdraw. 
+   * This will be subtracted from the balance.
    */
   @Override
   public void withdraw(double amount) throws InvalidAmountException, WithdrawalsAvailableException {
@@ -80,7 +102,17 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
     }
   }
 
-  /** Deposit method. */
+  /**
+   * Deposit method.
+   * 
+   * @throws InvalidAmountException
+   * Exception thrown when the amount is not correct in the context.
+   * 
+   * @see InvalidAmountException
+   * 
+   * @param amount is the parameter received by the method to perform the deposit. 
+   * This will be added to the balance.
+   */
   @Override
   public void deposit(double amount) throws InvalidAmountException {
     if (amount <= 0) {
@@ -97,20 +129,4 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
     System.out.println("Accrued interest forecast: " + this.getBalance() * this.getInterestRate());
   }
 
-}
-
-/**
- * This exception is defined to manage issues in case the number of withdrawals
- * available is = 0, hence this is thrown if the user try to perform such action
- * under the condition just specified.
- */
-class WithdrawalsAvailableException extends Exception {
-
-  private static final long serialVersionUID = 1L;
-  int withdrawalsAvailable;
-
-  WithdrawalsAvailableException(int withdrawalsAvailable) {
-    System.out.println("Withdrawals available: " + withdrawalsAvailable);
-    this.withdrawalsAvailable = withdrawalsAvailable;
-  }
 }

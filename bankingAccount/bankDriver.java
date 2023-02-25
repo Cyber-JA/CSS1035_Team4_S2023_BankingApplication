@@ -1,5 +1,15 @@
 package bankingAccount;
 
+/**
+* <h1>Welcome into the SJUBank!</h1>
+* The bankDriver program implements an application that
+* allows for a bank-user interaction.
+*
+* @author  Giuseppe, Hassan, Tatiana, Rajiv, Jake
+* @version 1.0
+* @since   2023-02-24 
+*/
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -36,14 +46,14 @@ public class bankDriver {
         // ATM-like menu
         interactiveMenu(selection);
       } else {
-        System.out.println(database.login(Username, Password));
         System.out.println("Login failed");
       }
     }
   }
 
-  /**
+  /*
    * This method is used to retrieve data from db and setup the account.
+   * 
    */
   public static void setObjectVariablesSavings() throws SQLException {
     try {
@@ -57,7 +67,7 @@ public class bankDriver {
     // needed to set withdrawals available
   }
 
-  /**
+  /*
    * This method is used to retrieve data from db and setup the account.
    */
   public static void setObjectVariablesCheckings() throws SQLException {
@@ -72,7 +82,7 @@ public class bankDriver {
     // needed to set the correct overdraft
   }
 
-  /**
+  /*
    * This method is used to display a general menu, common to savings and checking
    * account.
    */
@@ -83,7 +93,7 @@ public class bankDriver {
     System.out.println("3. Deposit");
   }
 
-  /**
+  /*
    * method specific for checking account, since it is possible to perform
    * payments.
    */
@@ -93,7 +103,7 @@ public class bankDriver {
     System.out.println("4. Make payment");
   }
 
-  /**
+  /*
    * This is the method in which is implemented the ATM-like menu and the process
    * associated The user is required to prompt a number in the range printed into
    * the menu to perform the corresponding action.
@@ -168,12 +178,12 @@ public class bankDriver {
     }
   }
 
-  /** method to break from the menu. */
+  /* method to break from the menu. */
   public static void choice0() {
     System.out.println("Thanks for using SJU Bank Services!");
   }
 
-  /** wrapper to perform the withdraw from savings account. */
+  /* wrapper to perform the withdraw from savings account. */
   public static void choice2Savings(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
@@ -190,7 +200,7 @@ public class bankDriver {
     displayMenu();
   }
 
-  /** wrapper to perform the deposit into savings account. */
+  /* wrapper to perform the deposit into savings account. */
   public static void choice3Savings(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
@@ -205,7 +215,7 @@ public class bankDriver {
     displayMenu();
   }
 
-  /** wrapper to perform the withdraw from checking account. */
+  /* wrapper to perform the withdraw from checking account. */
   public static void choice2Checking(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
@@ -221,7 +231,7 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /** wrapper to perform the deposit into checking account. */
+  /* wrapper to perform the deposit into checking account. */
   public static void choice3Checking(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
@@ -235,7 +245,7 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /** wrapper to perform the payment linked to the checking account. */
+  /* wrapper to perform the payment linked to the checking account. */
   public static void choice4Checking(Scanner selection) {
     System.out.println("How much would you like to pay");
     try {
@@ -251,7 +261,7 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /**
+  /*
    * Wrapper for the method to check the balance into checking account.
    */
   public static void choice1Checking() {
@@ -259,7 +269,7 @@ public class bankDriver {
     displayCheckingMenu();
   }
 
-  /**
+  /*
    * Wrapper for the method to check the balance into savings account.
    */
   public static void choice1Savings() {
