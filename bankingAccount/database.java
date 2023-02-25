@@ -17,7 +17,12 @@ import java.sql.Statement;
  * different information are specified: -UserID, unique for each user -Balance
  * -Account type (e.g. checking or savings) -Withdrawals available if savings
  * type -overdraft counter if checking type -hash of the password inserted by
- * the user, used into the login procedure
+ * the user, used into the login procedure.
+ * 
+ * SECURE PRACTICE: In the database, is not stored the password itself, but an hash of it.
+ * Then, after the user insert the password, the hash of this password is computed and compared
+ * to the stored one.
+ * Future implementation will provide a salt to harden the security and avoid some categories of attacks.
  */
 public class database {
 
@@ -32,6 +37,7 @@ public class database {
   /**
    * function used to compute the MD5 hash over the password. This is then used to
    * check into login function with the data contained into the database
+   * 
    * 
    * @param password
    * Password inserted by the user in the login phase.
@@ -62,6 +68,7 @@ public class database {
   
   /**
    * Method used to select hash in db.
+   * SECURE PRACTICE: A prepared statement is used into quering the database, to avoid SQLInjection attacks.
    * 
    * @param username
    * Username inserted by the user into the login phase.
@@ -73,6 +80,8 @@ public class database {
    * Value stored into the db
    * 
    * @see SQLException
+   * 
+   * @see PreparedStatement
    */
   public static String selectData(String username) throws SQLException {
     String result = null;
@@ -138,6 +147,8 @@ public class database {
    * This method is used to retrieve the UserID of the user whose username is
    * being specified.
    * 
+   * SECURE PRACTICE: A prepared statement is used into quering the database, to avoid SQLInjection attacks.
+   * 
    * @param username
    * Username inserted by the user into the login phase.
    * 
@@ -148,6 +159,8 @@ public class database {
    * Exception thrown in case of a malformed SQL request.
    * 
    * @see SQLException
+   * 
+   * @see PreparedStatement
    */
   public static int checkUID(String username) throws SQLException {
     int result = 0;
@@ -173,6 +186,8 @@ public class database {
    * This method is used to check which kind of account type is contained into the
    * db associated with the user specified as parameter.
    * 
+   * SECURE PRACTICE: A prepared statement is used into quering the database, to avoid SQLInjection attacks.
+   * 
    * @param username
    * Username inserted by the user into the login phase.
    * 
@@ -183,6 +198,8 @@ public class database {
    * Exception thrown in case of a malformed SQL request.
    * 
    * @see SQLException
+   * 
+   * @see PreparedStatement
    */
   public static String checkAccountType(String username) throws SQLException {
     String result = null;
@@ -209,6 +226,8 @@ public class database {
    * Method used to retrieve the balance of the user whose username is specified
    * as parameter.
    * 
+   * SECURE PRACTICE: A prepared statement is used into quering the database, to avoid SQLInjection attacks.
+   * 
    * @param username
    * Username inserted by the user into the login phase.
    *
@@ -219,6 +238,8 @@ public class database {
    * REsult of the query to the database.
    * 
    * @see SQLException
+   * 
+   * @see PreparedStatement
    */
   public static int checkBalance(String username) throws SQLException {
     int result = 0;
@@ -246,6 +267,8 @@ public class database {
    * This method is used to update the balance column of the specified user into
    * the database.
    * 
+   * SECURE PRACTICE: A prepared statement is used into quering the database, to avoid SQLInjection attacks.
+   * 
    * @param username
    * Username of the user currently logged in.
    * 
@@ -256,6 +279,8 @@ public class database {
    * Exception thrown in case of a malformed SQL request.
    * 
    * @see SQLException
+   * 
+   * @see PreparedStatement
    */
   public static void updateSQLBalance(String username, double balance) throws SQLException {
 

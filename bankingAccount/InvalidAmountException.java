@@ -4,6 +4,9 @@ package bankingAccount;
  * This exception was defined to manage issues with negative inputs for the
  * "withdraw" and "deposit" methods. A negative amount is not accepted, hence is
  * managed by throwing such exception.
+ * 
+ * SECURE PRACTICE: This exception is used to prevent the user from inserting values that would
+ * trigger number overflows.
  */
 public class InvalidAmountException extends Exception {
  
