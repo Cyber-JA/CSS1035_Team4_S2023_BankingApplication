@@ -8,9 +8,20 @@
  * to a correct and proper management of the database to avoid SQLInjection.
  * Besides it, the usage of different kinds of exceptions such as the InvalidAmountException, helps in avoiding the usage
  * wrong values.
- * Following the docs in which those secure coding practices are stored.
+ * Furthermore, Try-with-resource statement is used to free buffer used to store user input.
+ * According to numbers overflow vulnerabilities, double values are used within the application.
+ * Since double cannot wrap around, but only overflow to infinity and -infinity, the Math.isInfinity method is used before
+ * performing some computations.
+ * Following the docs in which those secure coding practices are shown.
+ * 
  * @see InvalidAmountException
+ * 
  * @see database
+ * 
+ * @see bankDriver
+ * 
+ * @see Account_S2023_SJUBank
+ * 
  */
 
 package bankingAccount;

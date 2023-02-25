@@ -110,7 +110,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
    * This will be subtracted from the balance.
    */
   @Override
-  public void withdraw(double amount) throws InvalidAmountException, WithdrawalsAvailableException {
+  public void withdraw(double amount) throws InvalidAmountException, WithdrawalsAvailableException, ArithmeticException {
     if (amount <= 0) {
       throw new InvalidAmountException(amount);
     }
@@ -120,6 +120,9 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
     } else if (this.getWithdrawalsAvailable() == 0) {
       throw new WithdrawalsAvailableException(this.getWithdrawalsAvailable());
     } else {
+		if(Double.isInfinite(Balance - amount))
+	  	  throw new ArithmeticException();
+	    else
       Balance = Balance - amount;
       System.out.printf("Current Balance: (%.2f)\n", getBalance());
       this.WithdrawalsAvailable--;
@@ -134,17 +137,25 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
    * @throws InvalidAmountException
    * Exception thrown when the amount is not correct in the context.
    * 
+   * @throws ArithmeticException
+   * Exception thrown when the value overflows.
+   * 
    * @see InvalidAmountException
+   * 
+   * @see ArithmeticException
    * 
    * @param amount is the parameter received by the method to perform the deposit. 
    * This will be added to the balance.
    */
   @Override
-  public void deposit(double amount) throws InvalidAmountException {
+  public void deposit(double amount) throws InvalidAmountException, ArithmeticException {
     if (amount <= 0) {
       throw new InvalidAmountException(amount);
     }
     System.out.println("Depositing...");
+    if(Double.isInfinite(Balance + amount))
+  	  throw new ArithmeticException();
+    else
     Balance = Balance + amount;
     System.out.printf("Deposited amount: %.2f\n", amount);
     System.out.printf("Current Balance: %.2f\n", getBalance());

@@ -112,16 +112,30 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
     WithdrawalsFee = withdrawalsFee;
   }
 
-  /** Method to apply withdrawals fee. */
+  /** Method to apply withdrawals fee.
+   *
+   * @throws ArithmeticException
+   * Exception thrown when the value overflows.
+   */
   public void applyWithdrawalsFee() {
     System.out.println("Applying withdrawal fee (" + this.getWithdrawalsFee() + "$)");
+    if(Double.isInfinite(Balance - this.WithdrawalsFee))
+  	  throw new ArithmeticException();
+    else
     Balance = Balance - this.getWithdrawalsFee();
     System.out.printf("Current balance after withdrawal: %.2f\n", this.getBalance());
   }
 
-  /** Method to apply overdraft fee. */
+  /** Method to apply overdraft fee. 
+   *
+   * @throws ArithmeticException
+   * Exception thrown when the value overflows.
+   */
   public void applyOverdraftFee() {
     System.out.println("Applying overdraft fee (" + this.getOverdraftFee() + "$)");
+    if(Double.isInfinite(Balance - this.overdraftFee))
+  	  throw new ArithmeticException();
+    else
     Balance = Balance - this.getOverdraftFee();
     System.out.printf("Current balance after overdraft: %.2f\n", this.getBalance());
   }
@@ -143,9 +157,12 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * 
    * @throws OverdraftAccountException
    * Exception thrown when the account is overdrafted and a withdrawal is requested.
+   * 
+   * @throws ArithmeticException
+   * Exception thrown when the value overflows.
    */
   @Override
-  public void withdraw(double amount) throws InvalidAmountException, OverdraftAccountException {
+  public void withdraw(double amount) throws InvalidAmountException, OverdraftAccountException, ArithmeticException {
     if (amount <= 0) {
       throw new InvalidAmountException(amount);
     }
@@ -156,6 +173,9 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
       // final double fee = 2; //fee imposed to the first overdraft transaction
       System.out.println("Insufficient funds, a two dollar fee will be levied.");
       // first overdraft transaction is allowed but a two dollar fee is imposed.
+      if(Double.isInfinite(Balance - amount))
+    	  throw new ArithmeticException();
+      else
       Balance = Balance - amount; 
       this.applyWithdrawalsFee();
       this.applyOverdraftFee();
@@ -163,6 +183,9 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
       // if not overdraft, proceed with the withdrawal
     } else if (Balance - amount >= 0 && overdraftcounter == 0) { 
       System.out.printf("Withdrawn amount: %.2f\n", amount);
+      if(Double.isInfinite(Balance - amount))
+    	  throw new ArithmeticException();
+      else
       Balance = Balance - amount;
       this.applyWithdrawalsFee();
       if (this.getBalance() < 0) {
@@ -186,6 +209,11 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    *
    * @throws InvalidAmountException
    * Exception thrown when the amount is not correct in the context.
+   * 
+   * @throws ArithmeticException
+   * Exception thrown when the value overflows.
+   * 
+   * @see ArithmeticException
    */
   @Override
   public void deposit(double amount) throws InvalidAmountException {
@@ -193,6 +221,9 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
       throw new InvalidAmountException(amount);
     }
     System.out.println("Depositing...");
+    if(Double.isInfinite(Balance + amount))
+    	throw new ArithmeticException();
+    else
     Balance = Balance + amount;
     System.out.printf("Deposited amount: %.2f\n", amount);
     if (Balance >= 0) { //
@@ -212,12 +243,17 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @see InvalidAmountException
    * 
    * @see OverdraftAccountException
+   * 
+   * @see InvalidAmountException
    *
    * @throws InvalidAmountException
    * Exception thrown when the amount is not correct in the context.
    *
    * @throws OverdraftAccountException
    * Exception thrown when the account is overdrafted and a withdrawal is requested.
+   * 
+   * @throws ArithmeticException
+   * Exception thrown when the value overflows.
    */
   public void makePayment(double amount) throws InvalidAmountException, OverdraftAccountException {
     if (amount <= 0) {
@@ -228,6 +264,9 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
     }
 
     else if (this.Balance - amount < 0 && this.getOverdraftcounter() == 0) {
+      if(Double.isInfinite(Balance - amount))
+    	  throw new ArithmeticException();
+      else
       this.Balance -= amount;
       System.out.println("Insufficient funds, a two dollar fee will be levied.");
       this.applyOverdraftFee();

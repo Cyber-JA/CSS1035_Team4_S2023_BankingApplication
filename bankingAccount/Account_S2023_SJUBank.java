@@ -9,7 +9,10 @@ public abstract class Account_S2023_SJUBank {
   protected java.util.Date dateCreated;
   /**
    * This is the Balance of the account created.
-   * Both the subclasses deploys this variable to store the amount of the account.*/
+   * Both the subclasses deploys this variable to store the amount of the account.
+   * SECURE PRACTICE: priori to all the computations, the Math.isInfinity method is used to check
+   * that the double value is not overflowing to infinity/-infinity.
+   */
   protected double Balance;
   
   /**
@@ -114,6 +117,9 @@ public abstract class Account_S2023_SJUBank {
    * @throws InvalidAmountException
    * Exception thrown when the amount is not correct in the context.
    * 
+   * @throws ArithmeticException
+   * Exception thrown when the result of the operations performed overflow to infinity/-infinity.
+   * 
    * @see InvalidAmountException
    * 
    * @see WithdrawalsAvailableException
@@ -121,17 +127,20 @@ public abstract class Account_S2023_SJUBank {
    * @see OverdraftAccountException
    */
   public abstract void withdraw(double amount)
-      throws InvalidAmountException, WithdrawalsAvailableException, OverdraftAccountException;
+      throws InvalidAmountException, WithdrawalsAvailableException, OverdraftAccountException, ArithmeticException;
 
   /** Abstract method deposit. 
    * 
    * @throws InvalidAmountException
    * Exception thrown when the amount is not correct in the context.
    * 
+   * @throws ArithmeticException
+   * Exception thrown when the result of the operations performed overflow to infinity/-infinity.
+   * 
    * @param amount 
    * is the amount that the user wants to deposit into the account.
    * This is gonna be added to the amount
    */
-  public abstract void deposit(double amount) throws InvalidAmountException;
+  public abstract void deposit(double amount) throws InvalidAmountException, ArithmeticException;
 
 }

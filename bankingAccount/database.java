@@ -14,9 +14,9 @@ import java.sql.Statement;
 /**
  * Class implementing the connection with the database and it's used
  * functionalities The Database contains a table named Userpass, in which
- * different information are specified: -UserID, unique for each user -Balance
- * -Account type (e.g. checking or savings) -Withdrawals available if savings
- * type -overdraft counter if checking type -hash of the password inserted by
+ * different information are specified: 1.UserID, unique for each user 2.Balance
+ * 3.Account type (e.g. checking or savings) 4.Withdrawals available if savings
+ * type 5.overdraft counter if checking type 6.hash of the password inserted by
  * the user, used into the login procedure.
  * 
  * SECURE PRACTICE: In the database, is not stored the password itself, but an hash of it.

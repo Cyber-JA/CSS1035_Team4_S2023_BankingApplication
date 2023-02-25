@@ -27,7 +27,10 @@ public class bankDriver {
   
   /**
    * this is the main method. here user input is obtained from cli and then
-   * processed
+   * processed. SECURE PRACTICE: In this function, user's input is received and placed into a buffer.
+   * Thanks to the usage of try-with-resource statement, the buffer is freed at the end of the usage.
+   * The program is not suffering overflows, since double values are used, which can overflows only to infinity
+   * and doesn't wrap around. To deal with infinity, the Math.isInfinity method is used and an exception thrown. 
    * 
    * @param args
    * Can be used to pass arguments to the main method.
@@ -41,15 +44,20 @@ public class bankDriver {
    * @throws IOException
    * Exception thrown in case of wrong IO operations.
    * 
+   * @throws ArithmeticException
+   * Exception thrown in case of overflows.
+   * 
    * @see SQLException
    * 
    * @see IOException
    * 
    * @see NoSuchAlgorithmException
+   * 
+   * @see ArithmeticException
    */
 
   public static void main(String[] args)
-      throws NoSuchAlgorithmException, SQLException, IOException {
+      throws NoSuchAlgorithmException, SQLException, IOException, ArithmeticException {
 	  
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer
       System.out.println(
@@ -254,6 +262,8 @@ public class bankDriver {
       System.out.println(e);
     } catch (SQLException e) {
       System.out.println(e);
+    } catch (ArithmeticException e) {
+        System.out.println(e);
     }
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -276,7 +286,10 @@ public class bankDriver {
       System.out.println("Exception:" + e);
     } catch (SQLException e) {
       System.out.println("Exception:" + e);
+    } catch (ArithmeticException e) {
+        System.out.println(e);
     }
+    
     displayCheckingMenu();
   }
 
@@ -295,6 +308,8 @@ public class bankDriver {
       System.out.println("Exception:" + e);
     } catch (SQLException e) {
       System.out.println("Exception:" + e);
+    } catch (ArithmeticException e) {
+        System.out.println(e);
     }
     displayCheckingMenu();
   }
@@ -316,6 +331,8 @@ public class bankDriver {
       System.out.println(e);
     } catch (SQLException e) {
       System.out.println(e);
+    } catch (ArithmeticException e) {
+        System.out.println(e);
     }
     displayCheckingMenu();
   }
