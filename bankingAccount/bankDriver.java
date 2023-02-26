@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.DataValidationException;
 
 /**
 * The bankDriver program implements an application that
@@ -15,7 +18,7 @@ import java.util.Scanner;
 */
 
 public class bankDriver {
-
+private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\s]{0,20}$");
   static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
   static Savings_S2023_SJUBank accountS = new Savings_S2023_SJUBank();
   static String Username = null;
@@ -64,6 +67,8 @@ public class bankDriver {
           + "followed by the enter key");
       Username = in.nextLine();
       Password = in.nextLine();
+      validate(Username,Username);
+      validate(Password,Password);
       // exiting from the try-catch statement will free the buffer
       Scanner selection = new Scanner(System.in); 
       // login
@@ -357,4 +362,37 @@ public class bankDriver {
   public static void invalidChoice() {
     System.out.println("Insert a valid command...");
   }
-}
+  public static String validate(String name, String input) throws DataValidationException {
+	    String canonical = normalize(input);
+	 
+	    if (!pattern.matcher(canonical).matches()) {
+	      throw new DataValidationException("Improper format in " + name + " field");
+	    }
+	     
+	    // Performs output encoding for nonvalid characters
+	    canonical = HTMLEntityEncode(canonical);
+	    return canonical;
+	  }
+	 
+	  // Normalizes to known instances 
+	  private static String normalize(String input) {
+	    String canonical =
+	      java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFKC);
+	    return canonical;
+	  }
+	 
+	  // Encodes nonvalid data
+	  private static String HTMLEntityEncode(String input) {
+	    StringBuffer sb = new StringBuffer();
+	 
+	    for (int i = 0; i < input.length(); i++) {
+	      char ch = input.charAt(i);
+	      if (Character.isLetterOrDigit(ch) || Character.isWhitespace(ch)) {
+	        sb.append(ch);
+	      } else {
+	        sb.append("&#" + (int)ch + ";");
+	      }
+	    }
+	    return sb.toString();
+	  }
+	}
