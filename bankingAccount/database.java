@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.JLabel;
-
 /**
  * Class implementing the connection with the database and it's used
  * functionalities The Database contains a table named Userpass, in which

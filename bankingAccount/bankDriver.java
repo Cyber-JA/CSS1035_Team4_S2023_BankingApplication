@@ -1,7 +1,5 @@
 package bankingAccount;
 
-/**ccomment.*/
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
