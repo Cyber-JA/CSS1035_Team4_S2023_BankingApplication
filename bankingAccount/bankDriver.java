@@ -1,6 +1,8 @@
 package bankingAccount;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -18,7 +20,8 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.common.DataValidati
 */
 
 public class bankDriver {
-private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\s]{0,20}$");
+
+private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W]{0,20}$");
   static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
   static Savings_S2023_SJUBank accountS = new Savings_S2023_SJUBank();
   static String Username = null;
@@ -60,6 +63,9 @@ private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\s]{0,20}$")
   public static void main(String[] args)
       throws NoSuchAlgorithmException, SQLException, IOException, ArithmeticException {
 	  
+	  System.out.println("città");
+	  setUTF8systemout();
+	  System.out.println("città中文");
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer
       System.out.println(
           "Welcome to SJU bank, please enter your username "
@@ -67,6 +73,7 @@ private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\s]{0,20}$")
           + "followed by the enter key");
       Username = in.nextLine();
       Password = in.nextLine();
+      passwordRequirements(Password);
       validate(Username,Username);
       validate(Password,Password);
       // exiting from the try-catch statement will free the buffer
@@ -389,10 +396,37 @@ private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\s]{0,20}$")
 	      char ch = input.charAt(i);
 	      if (Character.isLetterOrDigit(ch) || Character.isWhitespace(ch)) {
 	        sb.append(ch);
-	      } else {
+	      }
+	      if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
+	    	  sb.append(ch);
+	      }
+	      else {
 	        sb.append("&#" + (int)ch + ";");
 	      }
 	    }
 	    return sb.toString();
 	  }
+	private static void passwordRequirements(String Password) {
+		String str = Password;
+		int specials = 0, digits = 0, letters = 0, spaces = 0;
+		for (int i = 0; i < str.length(); ++i) {
+		   char ch = str.charAt(i);
+		   if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
+		      ++specials;
+		   } else if (Character.isDigit(ch)) {
+		      ++digits;
+		   } else if (Character.isWhitespace(ch)) {
+		      ++spaces;
+		   } else {
+		      ++letters;
+		   }
+		}
+	System.out.println("Password is: "+ letters + " letters long " + "contains " + digits +" digits " + specials+ " special characters "+ spaces+" white space");
 	}
+	private static void setUTF8systemout() throws UnsupportedEncodingException {
+		PrintStream out = new PrintStream(System.out, true, "UTF-8"); // PrintStream object with UTF-8 encoding
+		System.setOut(out); // set console printing to the new PrintStream object we declared.
+		
+	}
+
+}
