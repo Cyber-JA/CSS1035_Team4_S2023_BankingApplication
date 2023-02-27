@@ -22,6 +22,10 @@
  * 
  * @see Account_S2023_SJUBank
  * 
+ * @author  Giuseppe, Hassan, Tatiana, Rajiv, Jake - Group 4
+ * @version 1.0
+ * @since   2023-02-24 
+ * 
  */
 
 package bankingAccount;

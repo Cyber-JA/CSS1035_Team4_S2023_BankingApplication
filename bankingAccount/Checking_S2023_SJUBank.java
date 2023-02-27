@@ -57,7 +57,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @return overdraftFee
    * Returns the set fee amount when the account overdrafts.
    */
-  public double getOverdraftFee() {
+  protected double getOverdraftFee() {
     return overdraftFee;
   }
 
@@ -68,7 +68,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @param overdraftFee
    * Value used to set the amount of fee applied into overdrafting the account.
    */
-  public void setOverdraftFee(double overdraftFee) {
+  protected void setOverdraftFee(double overdraftFee) {
     this.overdraftFee = overdraftFee;
   }
 
@@ -78,7 +78,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @return overdraftcounter
    * Returns the overdraft actual counter.
    */
-  public int getOverdraftcounter() {
+  protected int getOverdraftcounter() {
     return overdraftcounter;
   }
 
@@ -88,7 +88,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @param overdraftcounter
    * Value used to set the overdraftcounter when overdrafting the account.
    */
-  public void setOverdraftcounter(int overdraftcounter) {
+  protected void setOverdraftcounter(int overdraftcounter) {
     this.overdraftcounter = overdraftcounter;
   }
 
@@ -98,7 +98,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @return WithdrawalsFee
    * Returns the fee applied whtn withdrawing.
    */
-  public double getWithdrawalsFee() {
+  protected double getWithdrawalsFee() {
     return WithdrawalsFee;
   }
 
@@ -108,7 +108,7 @@ public class Checking_S2023_SJUBank extends Account_S2023_SJUBank {
    * @param withdrawalsFee
    * Value used to set the fee applied when withdrawing.
    */
-  public void setWithdrawalsFee(double withdrawalsFee) {
+  protected void setWithdrawalsFee(double withdrawalsFee) {
     WithdrawalsFee = withdrawalsFee;
   }
 

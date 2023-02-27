@@ -2,16 +2,17 @@ package bankingAccount;
 
 /**
  * This is the superclass from which the savings and checking account are derived. 
+ * SECURE PRACTICE: prior to all the computations, the Math.isInfinity method is used to check
+ * that the double value is not overflowing to infinity/-infinity.
  */
 
 public abstract class Account_S2023_SJUBank {
 
-  protected java.util.Date dateCreated;
+  static private java.util.Date dateCreated = new java.util.Date();;
   /**
    * This is the Balance of the account created.
    * Both the subclasses deploys this variable to store the amount of the account.
-   * SECURE PRACTICE: priori to all the computations, the Math.isInfinity method is used to check
-   * that the double value is not overflowing to infinity/-infinity.
+   * 
    */
   protected double Balance;
   
@@ -21,12 +22,10 @@ public abstract class Account_S2023_SJUBank {
   private int UID;
 
   protected Account_S2023_SJUBank() {
-    dateCreated = new java.util.Date();
     this.Balance = 0;
   }
 
   protected Account_S2023_SJUBank(double balance) {
-    this.dateCreated = new java.util.Date();
     Balance = balance;
   }
   
@@ -36,7 +35,7 @@ public abstract class Account_S2023_SJUBank {
    * @return Balance
    * Actual amount into the account
    */
-  public double getBalance() {
+  protected double getBalance() {
     return Balance;
   }
   
@@ -46,7 +45,7 @@ public abstract class Account_S2023_SJUBank {
    * @return UID
    * Actual identifier of the owner.
    */
-  public int getUID() {
+  protected int getUID() {
     return UID;
   }
 
@@ -58,7 +57,7 @@ public abstract class Account_S2023_SJUBank {
    * @param uid
    * User ID to set.
    */
-  public void setUID(int uid) {
+  protected void setUID(int uid) {
     UID = uid;
   }
   /**
@@ -72,7 +71,7 @@ public abstract class Account_S2023_SJUBank {
    * 
    * @see InvalidAmountException
    */
-  public void setBalance(double balance) throws InvalidAmountException {
+  protected void setBalance(double balance) throws InvalidAmountException {
     if (balance < 0) {
       throw new InvalidAmountException(balance);
     } else
@@ -85,8 +84,8 @@ public abstract class Account_S2023_SJUBank {
    *  @return dateCreated
    *  Returns the date of the creation of the account.
    */
-  public java.util.Date getDateCreated() {
-    return dateCreated;
+  protected Object getDateCreated() {
+    return dateCreated.clone();
   }
 
   /**

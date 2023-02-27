@@ -52,6 +52,8 @@ class testDatabase {
       System.out.println("Actual: 0d107d09f5bbe40cade3de5c71e9e9b7");
       /* testing */
       assertEquals(check, result);
+      stmt.close();
+      connection.close();
     } catch (SQLException e) {
       fail("Exception: " + e);
     }
@@ -119,6 +121,8 @@ class testDatabase {
       System.out.println("Actual: " + database.checkUID(username));
       /* testing */
       assertEquals(database.checkUID(username), result);
+      stmt.close();
+      connection.close();
     } catch (SQLException e) {
       fail("Exception: " + e);
     }
@@ -147,6 +151,7 @@ class testDatabase {
       System.out.println("Actual: " + database.checkAccountType(username));
       /* testing */
       assertEquals(database.checkAccountType(username), result);
+      stmt.close();
     } catch (SQLException e) {
       fail("Exception: " + e);
     }
@@ -175,7 +180,7 @@ class testDatabase {
       System.out.println("Actual: " + database.checkBalance(username));
       /* testing */
       assertEquals(database.checkBalance(username), result);
-
+      stmt.close();
     } catch (SQLException e) {
       fail("Exception: " + e);
     }
@@ -210,6 +215,9 @@ class testDatabase {
       System.out.println("Actual: " + result);
       /* testing */
       assertEquals(balance, result);
+      stmt.close();
+      stmtTest.close();
+      connection.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }

@@ -99,7 +99,7 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getString(1);
-
+      stmt.close();
     } catch (SQLException e) {
       System.out.println("Cannot find a result");
       return "";
@@ -178,6 +178,8 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getInt(1);
+      stmt.close();
+      
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -217,6 +219,7 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getString(1);
+      stmt.close();
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -258,7 +261,7 @@ public class database {
       resultSet.next();
       result = resultSet.getInt(1);
       // Print results from select statement
-
+      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -294,6 +297,7 @@ public class database {
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       stmt.execute();
+      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }

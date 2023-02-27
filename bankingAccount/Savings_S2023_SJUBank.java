@@ -58,7 +58,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
    * @return InterestRate
    * Returns the set interest rate applied from the bank.
    */
-  public double getInterestRate() {
+  protected double getInterestRate() {
     return InterestRate;
   }
 
@@ -68,7 +68,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
    * @param interestRate
    * Value used to set interest rate from the bank.
    */
-  public void setInterestRate(double interestRate) {
+  protected void setInterestRate(double interestRate) {
     InterestRate = interestRate;
   }
 
@@ -78,7 +78,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
    * @return WithdrawalsAvailable
    * Returns the Withdrawals Available for this account.
    */
-  public int getWithdrawalsAvailable() {
+  protected int getWithdrawalsAvailable() {
     return WithdrawalsAvailable;
   }
   
@@ -88,7 +88,7 @@ public class Savings_S2023_SJUBank extends Account_S2023_SJUBank {
    * @param withdrawalsAvailable
    * Value used to set withdrawals available for this account.
    */
-  public void setWithdrawalsAvailable(int withdrawalsAvailable) {
+  protected void setWithdrawalsAvailable(int withdrawalsAvailable) {
     this.WithdrawalsAvailable = withdrawalsAvailable;
   }
 
