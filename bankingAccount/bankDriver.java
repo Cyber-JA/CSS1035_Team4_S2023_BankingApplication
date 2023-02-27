@@ -172,27 +172,28 @@ public class bankDriver {
         } catch (SQLException e1) {
           System.out.println(e1);
         }
-        int choice = -1;
         while (true) {
-          choice = selection.nextInt();
-          if (choice == 0) {
-            choice0();
-            break;
-          }
-          if (choice == 1) {
-            choice1Savings();
-            continue;
-          }
-          if (choice == 2) {
-            choice2Savings(selection);
-            continue;
-          }
-          if (choice == 3) {
-            choice3Savings(selection);
-            continue;
-          } else
-            invalidChoice();
-
+        	
+        int choice = validateIntInput(selection);
+				
+        if (choice == 0) {
+				choice0();
+				break;
+        }
+        if (choice == 1) {
+				choice1Savings();
+				continue;
+        }
+        if (choice == 2) {
+				choice2Savings(selection);
+				continue;
+        }
+        if (choice == 3) {
+				choice3Savings(selection);
+				continue;
+        } else
+				invalidChoice();
+        	
         }
       } else if (val == 1) {
         System.out.println("Welcome to your checking account " + HTMLEntityEncode(Username));
@@ -200,7 +201,7 @@ public class bankDriver {
         setObjectVariablesCheckings();
 
         while (true) {
-          int choice = selection.nextInt();
+        	int choice = validateIntInput(selection);
           if (choice == 0) {
             choice0();
             break;
@@ -250,7 +251,7 @@ public class bankDriver {
   public static void choice2Savings(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
-      accountS.withdraw(selection.nextFloat());
+      accountS.withdraw(validateFloatInput(selection));
       database.updateSQLBalance(Username, accountS.getBalance(), "Savings");
     } catch (InvalidAmountException e) {
       System.out.println("Exception:" + e);
@@ -272,15 +273,17 @@ public class bankDriver {
   public static void choice3Savings(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
-      accountS.deposit(selection.nextFloat());
+    	accountS.withdraw(validateFloatInput(selection));
       database.updateSQLBalance(Username, accountS.getBalance(), "Savings");
     } catch (InvalidAmountException e) {
       System.out.println(e);
     } catch (SQLException e) {
       System.out.println(e);
     } catch (ArithmeticException e) {
-        System.out.println(e);
-    }
+      System.out.println(e);
+    } catch (WithdrawalsAvailableException e) {
+      System.out.println(e);
+	}
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
   }
@@ -294,7 +297,7 @@ public class bankDriver {
   public static void choice2Checking(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
-      accountC.withdraw(selection.nextFloat());
+      accountC.withdraw(validateFloatInput(selection));
       database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
       System.out.println("Exception:" + e);
@@ -318,7 +321,7 @@ public class bankDriver {
   public static void choice3Checking(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
-      accountC.deposit(selection.nextFloat());
+      accountC.deposit(validateFloatInput(selection));
       database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
       System.out.println("Exception:" + e);
@@ -339,7 +342,7 @@ public class bankDriver {
   public static void choice4Checking(Scanner selection) {
     System.out.println("How much would you like to pay");
     try {
-      accountC.makePayment(selection.nextFloat());
+      accountC.makePayment(validateFloatInput(selection));
       database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
       System.out.println(e);
@@ -481,16 +484,39 @@ public class bankDriver {
 	  System.out.println("Available accounts:");
 	  System.out.println("1. Checking");
 	  System.out.println("2. Savings");
-	  int account = selection.nextInt();
+	  int choice = validateIntInput(selection);
 	  int errCounter = 3;
-	  while(account != 1 && account != 2) {
+	  while(choice != 1 && choice != 2) {
 		  
 		  invalidChoice();
-		  account = selection.nextInt();
+		  choice = validateIntInput(selection);
 		  errCounter--;
 		  if(errCounter == 0)
 			  return 0;
 	  }
-	  return account;
+	  return choice;
   }
+  
+  protected static int validateIntInput(Scanner selection) {
+      String input = selection.next();
+      int intInputValue = 0;
+      try {
+          intInputValue = Integer.parseInt(input);
+          return intInputValue;
+      } catch (NumberFormatException ne) {
+          return -1;
+      }
+  }
+  
+  protected static float validateFloatInput(Scanner selection) {
+      String input = selection.next();
+      float floatInputValue = 0;
+      try {
+          floatInputValue = Float.parseFloat(input);
+          return floatInputValue;
+      } catch (NumberFormatException ne) {
+          return -1;
+      }
+  }
+  
 }
