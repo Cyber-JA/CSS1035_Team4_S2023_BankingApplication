@@ -13,20 +13,15 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.common.DataValidati
 /**
 * The bankDriver program implements an application that
 * allows for a bank-user interaction.
-* 
-* SECURE PRACTICE: In this function, user's input is received and placed into a buffer.
-* Thanks to the usage of try-with-resource statement, the buffer is freed at the end of the usage.
-* The program is not suffering overflows, since double values are used, which can overflows only to infinity
-* and doesn't wrap around. To deal with infinity, the Math.isInfinity method is used and an exception thrown. 
-* Last but not least, since some untrusted Strings are prompted by the user, it is needed to normalize
-* then validate those strings, as well as encode the ones used when printing on stdout. Hence input normalization
-* input validation and output encoding are performed in this file.
 *
+* @author  Giuseppe, Hassan, Tatiana, Rajiv, Jake
+* @version 1.0
+* @since   2023-02-24 
 */
 
 public class bankDriver {
 
-  private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W]{0,20}$");
+private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W]{0,20}$");
   static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
   static Savings_S2023_SJUBank accountS = new Savings_S2023_SJUBank();
   static String Username = null;
@@ -36,7 +31,10 @@ public class bankDriver {
   
   /**
    * this is the main method. here user input is obtained from cli and then
-   * processed. 
+   * processed. SECURE PRACTICE: In this function, user's input is received and placed into a buffer.
+   * Thanks to the usage of try-with-resource statement, the buffer is freed at the end of the usage.
+   * The program is not suffering overflows, since double values are used, which can overflows only to infinity
+   * and doesn't wrap around. To deal with infinity, the Math.isInfinity method is used and an exception thrown. 
    * 
    * @param args
    * Can be used to pass arguments to the main method.
@@ -65,7 +63,9 @@ public class bankDriver {
   public static void main(String[] args)
       throws NoSuchAlgorithmException, SQLException, IOException, ArithmeticException {
 	  
+	  System.out.println("città");
 	  setUTF8systemout();
+	  System.out.println("città中文");
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer
       System.out.println(
           "Welcome to SJU bank, please enter your username "
@@ -97,9 +97,9 @@ public class bankDriver {
    * 
    * @see SQLException
    */
-  private static void setObjectVariablesSavings() throws SQLException {
+  public static void setObjectVariablesSavings() throws SQLException {
     try {
-      accountS.setBalance(database.checkBalance(Username));
+      accountS.setBalance(database.checkBalance(Username,"Savings"));
     } catch (InvalidAmountException e) {
       System.out.println(e);
     } catch (SQLException e) {
@@ -117,9 +117,9 @@ public class bankDriver {
    * 
    * @see SQLException
    */
-  private static void setObjectVariablesCheckings() throws SQLException {
+  public static void setObjectVariablesCheckings() throws SQLException {
     try {
-      accountC.setBalance(database.checkBalance(Username));
+      accountC.setBalance(database.checkBalance(Username,"Checking"));
     } catch (InvalidAmountException e) {
       System.out.println(e);
     } catch (SQLException e) {
@@ -133,7 +133,7 @@ public class bankDriver {
    * This method is used to display a general menu, common to savings and checking
    * account.
    */
-  private static void displayMenu() {
+  public static void displayMenu() {
     System.out.println("0. Exit");
     System.out.println("1. See Balance");
     System.out.println("2. Withdraw");
@@ -144,7 +144,7 @@ public class bankDriver {
    * method specific for checking account, since it is possible to perform
    * payments.
    */
-  private static void displayCheckingMenu() {
+  public static void displayCheckingMenu() {
     System.out.println("Please select a choice ranging from 0-4");
     displayMenu();
     System.out.println("4. Make payment");
@@ -158,80 +158,114 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  public static void interactiveMenu(Scanner selection) {
-    try {
-      if (database.checkAccountType(Username).contains("Savings")) {
-        System.out.println("Welcome to your account " + HTMLEntityEncode(Username));
-        System.out.println("Please select a choice ranging from 0-3");
-        displayMenu();
-        try {
-          setObjectVariablesSavings();
-        } catch (SQLException e1) {
-          System.out.println(e1);
-        }
-        int choice = -1;
-        while (true) {
-          choice = selection.nextInt();
-          if (choice == 0) {
-            choice0();
-            break;
-          }
-          if (choice == 1) {
-            choice1Savings();
-            continue;
-          }
-          if (choice == 2) {
-            choice2Savings(selection);
-            continue;
-          }
-          if (choice == 3) {
-            choice3Savings(selection);
-            continue;
-          } else
-            invalidChoice();
-
-        }
-      } else if (database.checkAccountType(Username).contains("Checking")) {
-        System.out.println("Welcome to your account " + HTMLEntityEncode(Username));
-        displayCheckingMenu();
-        setObjectVariablesCheckings();
-
-        while (true) {
-          int choice = selection.nextInt();
-          if (choice == 0) {
-            choice0();
-            break;
-          }
-          if (choice == 1) {
-            choice1Checking();
-            continue;
-          }
-          if (choice == 2) {
-            choice2Checking(selection);
-            continue;
-
-          }
-          if (choice == 3) {
-            choice3Checking(selection);
-            continue;
-          }
-          if (choice == 4) {
-            choice4Checking(selection);
-            continue;
-          } else
-            invalidChoice();
-
-        }
+  protected static int chooseAccount(Scanner selection) {
+      System.out.println("Which account do you wanna access?");
+      System.out.println("Available accounts:");
+      System.out.println("1. Checking");
+      System.out.println("2. Savings");
+      int account = selection.nextInt();
+      int errCounter = 3;
+      while(account != 1 && account != 2) {
+          System.out.println(account);
+    	  invalidChoice();
+          account = selection.nextInt();
+          System.out.println(account);
+          errCounter--;
+          if(errCounter == 0)
+              return 0;
       }
-    } catch (SQLException e) {
-      System.out.println(e);
-    }
+      return account;
   }
+  public static void interactiveMenu(Scanner selection) {
+	    try {
+
+	        int val = chooseAccount(selection);
+
+	      if (val == 2) {
+	        System.out.println("Welcome to your savings account " + HTMLEntityEncode(Username));
+	        System.out.println("Please select a choice ranging from 0-3");
+	        displayMenu();
+	        try {
+	          setObjectVariablesSavings();
+	        } catch (SQLException e1) {
+	          System.out.println(e1);
+	        }
+	        int choice = -1;
+	        while (true) {
+	        	if(!selection.hasNextInt()) {
+		        	  System.out.println("Enter a valid number.");
+		          }
+		          else {
+		        	choice = selection.nextInt();
+		          }
+	          if (choice == 0) {
+	            choice0();
+	            break;
+	          }
+	          if (choice == 1) {
+	            choice1Savings();
+	            continue;
+	          }
+	          if (choice == 2) {
+	            choice2Savings(selection);
+	            continue;
+	          }
+	          if (choice == 3) {
+	            choice3Savings(selection);
+	            continue;
+	          } else
+	            invalidChoice();
+
+	        }
+	      } else if (val == 1) {
+	        System.out.println("Welcome to your checking account " + HTMLEntityEncode(Username));
+	        displayCheckingMenu();
+	        setObjectVariablesSavings();
+	        int choice = -1;
+	        while (true) {
+	          if(!selection.hasNextInt()) {
+	        	  System.out.println("Enter a valid number.");
+	          }
+	          else {
+	        	choice = selection.nextInt();
+	          }
+	        	if (choice == 0) {
+	            choice0();
+	            break;
+	          }
+	          if (choice == 1) {
+	            choice1Checking();
+	            continue;
+	          }
+	          if (choice == 2) {
+	            choice2Checking(selection);
+	            continue;
+
+	          }
+	          if (choice == 3) {
+	            choice3Checking(selection);
+	            continue;
+	          }
+	          if (choice == 4) {
+	            choice4Checking(selection);
+	            continue;
+	          } else
+	            invalidChoice();
+
+	        }
+	      } else if (val == 0) {
+	          System.out.println("Exceeded number of trials.");
+	          choice0();
+	      }
+	    } catch (SQLException e) {
+	      System.out.println(e);
+	    }
+	  }
 
   /** 
    * Method to break from the menu. 
    */
-  private static void choice0() {
+  public static void choice0() {
     System.out.println("Thanks for using SJU Bank Services!");
   }
 
@@ -241,17 +275,17 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice2Savings(Scanner selection) {
+  public static void choice2Savings(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
       accountS.withdraw(selection.nextFloat());
-      database.updateSQLBalance(Username, accountS.getBalance());
+      database.updateSQLBalance(Username, accountS.getBalance(), "Savings");
     } catch (InvalidAmountException e) {
-      System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (WithdrawalsAvailableException e) {
-      System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (SQLException e) {
-      System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     }
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -263,17 +297,17 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice3Savings(Scanner selection) {
+  public static void choice3Savings(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
       accountS.deposit(selection.nextFloat());
-      database.updateSQLBalance(Username, accountS.getBalance());
+      database.updateSQLBalance(Username, accountS.getBalance(), "Savings");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (ArithmeticException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+        System.out.println(e);
     }
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -285,17 +319,17 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice2Checking(Scanner selection) {
+  public static void choice2Checking(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
       accountC.withdraw(selection.nextFloat());
-      database.updateSQLBalance(Username, accountC.getBalance());
+      database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (OverdraftAccountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (ArithmeticException e) {
         System.out.println(e);
     }
@@ -309,15 +343,15 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice3Checking(Scanner selection) {
+  public static void choice3Checking(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
       accountC.deposit(selection.nextFloat());
-      database.updateSQLBalance(Username, accountC.getBalance());
+      database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (ArithmeticException e) {
         System.out.println(e);
     }
@@ -330,19 +364,19 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice4Checking(Scanner selection) {
+  public static void choice4Checking(Scanner selection) {
     System.out.println("How much would you like to pay");
     try {
       accountC.makePayment(selection.nextFloat());
-      database.updateSQLBalance(Username, accountC.getBalance());
+      database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (OverdraftAccountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (ArithmeticException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+        System.out.println(e);
     }
     displayCheckingMenu();
   }
@@ -350,7 +384,7 @@ public class bankDriver {
   /**
    * Wrapper for the method to check the balance into checking account.
    */
-  private static void choice1Checking() {
+  public static void choice1Checking() {
     System.out.println("Balance: " + accountC.getBalance());
     displayCheckingMenu();
   }
@@ -358,7 +392,7 @@ public class bankDriver {
   /**
    * Wrapper for the method to check the balance into savings account.
    */
-  private static void choice1Savings() {
+  public static void choice1Savings() {
     System.out.println("Balance: " + accountS.getBalance());
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -366,34 +400,30 @@ public class bankDriver {
   /**
    * Method to manage an invalid choice from the menu.
    */
-  private static void invalidChoice() {
+  public static void invalidChoice() {
     System.out.println("Insert a valid command...");
   }
-  
-  /**
-   * Method used to normalize user input.
-   * 
-   *  @param input
-   *  Untrusted input to normalize.
-   *  
-   *  @return canonical
-   *  returned normalized input.
-   */
-  public static String normalize(String input) {
+  public static String validate(String name, String input) throws DataValidationException {
+	    String canonical = normalize(input);
+	 
+	    if (!pattern.matcher(canonical).matches()) {
+	      throw new DataValidationException("Improper format in " + name + " field");
+	    }
+	     
+	    // Performs output encoding for nonvalid characters
+	    canonical = HTMLEntityEncode(canonical);
+	    return canonical;
+	  }
+	 
+	  // Normalizes to known instances 
+	  private static String normalize(String input) {
 	    String canonical =
 	      java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFKC);
 	    return canonical;
 	  }
 	 
-  /**
-   * Performing encoding of invalid characters.
-   * 
-   *  @param input
-   *  Receiving normalized, then validated input.
-   *  
-   *  @return encoded input.
-   */
-  public static String HTMLEntityEncode(String input) {
+	  // Encodes nonvalid data
+	  private static String HTMLEntityEncode(String input) {
 	    StringBuffer sb = new StringBuffer();
 	 
 	    for (int i = 0; i < input.length(); i++) {
@@ -401,7 +431,7 @@ public class bankDriver {
 	      if (Character.isLetterOrDigit(ch) || Character.isWhitespace(ch)) {
 	        sb.append(ch);
 	      }
-	      else if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
+	      if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
 	    	  sb.append(ch);
 	      }
 	      else {
@@ -410,8 +440,7 @@ public class bankDriver {
 	    }
 	    return sb.toString();
 	  }
-  
-  private static void passwordRequirements(String Password) {
+	private static void passwordRequirements(String Password) {
 		String str = Password;
 		int specials = 0, digits = 0, letters = 0, spaces = 0;
 		for (int i = 0; i < str.length(); ++i) {
@@ -428,45 +457,10 @@ public class bankDriver {
 		}
 	System.out.println("Password is: "+ letters + " letters long " + "contains " + digits +" digits " + specials+ " special characters "+ spaces+" white space");
 	}
-	
-  /**
-  * Wrapper method to set the UTF-8 Encoding.
-  * 
-  *  @throws UnsupportedEncodingException
-  *  Exception thrown in case of unsupported encoding.
-  */
-  public static void setUTF8systemout() throws UnsupportedEncodingException {
+	private static void setUTF8systemout() throws UnsupportedEncodingException {
 		PrintStream out = new PrintStream(System.out, true, "UTF-8"); // PrintStream object with UTF-8 encoding
-		System.setOut(out); // set console printing to the new PrintStream object we declared.	
+		System.setOut(out); // set console printing to the new PrintStream object we declared.
+		
 	}
 
-  
-  /**
-   * In this method are performed both validation and normalization 
-   * of user's input.
-   * 
-   *  @param name
-   *  Input acquired by the thrown exception
-   *  
-   *  @param input
-   *  Input normalized and then validated.
-   *  
-   *  @throws DataValidationException
-   *  Exception thrown if, after normalizing, when validating data, is not properly formatted.
-   *  
-   *  @return canonical
-   *  returned normalized, validated, HTML entity encoded input.
-   */
-  public static String validate(String name, String input) throws DataValidationException {
-	  //normalizing  
-	  String canonical = normalize(input);
-	  	//validating
-	    if (!pattern.matcher(canonical).matches()) {
-	      throw new DataValidationException("Improper format in " + name + " field");
-	    }
-	     
-	    // Performs output encoding for nonvalid characters
-	    canonical = HTMLEntityEncode(canonical);
-	    return canonical;
-	  }
 }

@@ -99,7 +99,7 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getString(1);
-      stmt.close();
+
     } catch (SQLException e) {
       System.out.println("Cannot find a result");
       return "";
@@ -178,8 +178,6 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getInt(1);
-      stmt.close();
-      
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -219,7 +217,6 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getString(1);
-      stmt.close();
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -246,7 +243,7 @@ public class database {
    * 
    * @see PreparedStatement
    */
-  public static int checkBalance(String username) throws SQLException {
+  public static int checkBalance(String username, String AccountType) throws SQLException {
     int result = 0;
     ResultSet resultSet = null;
 
@@ -254,14 +251,20 @@ public class database {
         Statement statement = connection.createStatement();) {
 
       // Create and execute a SELECT SQL statement.
-      String selectSql = "SELECT Balance FROM Userpass WHERE username = ?";
-      PreparedStatement stmt = connection.prepareStatement(selectSql);
+    	String selectSql= null;
+    	if(AccountType.equalsIgnoreCase("Checking")) {
+    	 selectSql = "SELECT CheckingBalance FROM Userpass WHERE username = ?";
+    	}
+    	if(AccountType.equalsIgnoreCase("Savings")) {
+       	 selectSql = "SELECT SavingsBalance FROM Userpass WHERE username = ?";
+    	}
+       	 PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getInt(1);
       // Print results from select statement
-      stmt.close();
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -287,17 +290,20 @@ public class database {
    * 
    * @see PreparedStatement
    */
-  public static void updateSQLBalance(String username, double balance) throws SQLException {
-
+  public static void updateSQLBalance(String username, double balance, String AccountType) throws SQLException {
+String selectSql = null;
     try (Connection connection = DriverManager.getConnection(connectionUrl); 
         Statement statement = connection.createStatement();) {
 
-      // Create and execute a SELECT SQL statement.
-      String selectSql = "UPDATE Userpass SET Balance = " + balance + " WHERE username = ?";
+    	if(AccountType.equalsIgnoreCase("Checking")) {
+       	 selectSql = "SELECT CheckingBalance FROM Userpass WHERE username = ?";
+       	}
+       	if(AccountType.equalsIgnoreCase("Savings")) {
+          	 selectSql = "SELECT SavingsBalance FROM Userpass WHERE username = ?";
+          	}
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       stmt.execute();
-      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
