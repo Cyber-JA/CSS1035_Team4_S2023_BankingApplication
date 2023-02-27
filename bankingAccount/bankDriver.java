@@ -99,7 +99,7 @@ public class bankDriver {
    */
   private static void setObjectVariablesSavings() throws SQLException {
     try {
-      accountS.setBalance(database.checkBalance(Username));
+      accountS.setBalance(database.checkBalance(Username, "Savings"));
     } catch (InvalidAmountException e) {
       System.out.println(e);
     } catch (SQLException e) {
@@ -119,7 +119,7 @@ public class bankDriver {
    */
   private static void setObjectVariablesCheckings() throws SQLException {
     try {
-      accountC.setBalance(database.checkBalance(Username));
+      accountC.setBalance(database.checkBalance(Username, "Checking"));
     } catch (InvalidAmountException e) {
       System.out.println(e);
     } catch (SQLException e) {
@@ -160,8 +160,11 @@ public class bankDriver {
    */
   public static void interactiveMenu(Scanner selection) {
     try {
-      if (database.checkAccountType(Username).contains("Savings")) {
-        System.out.println("Welcome to your account " + HTMLEntityEncode(Username));
+      
+    	int val = chooseAccount(selection);
+      
+      if (val == 2) {
+        System.out.println("Welcome to your savings account " + HTMLEntityEncode(Username));
         System.out.println("Please select a choice ranging from 0-3");
         displayMenu();
         try {
@@ -191,8 +194,8 @@ public class bankDriver {
             invalidChoice();
 
         }
-      } else if (database.checkAccountType(Username).contains("Checking")) {
-        System.out.println("Welcome to your account " + HTMLEntityEncode(Username));
+      } else if (val == 1) {
+        System.out.println("Welcome to your checking account " + HTMLEntityEncode(Username));
         displayCheckingMenu();
         setObjectVariablesCheckings();
 
@@ -222,6 +225,9 @@ public class bankDriver {
             invalidChoice();
 
         }
+      } else if (val == 0) {
+    	  System.out.println("Exceeded number of trials.");
+    	  choice0();
       }
     } catch (SQLException e) {
       System.out.println(e);
@@ -241,17 +247,17 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice2Savings(Scanner selection) {
+  public static void choice2Savings(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
       accountS.withdraw(selection.nextFloat());
-      database.updateSQLBalance(Username, accountS.getBalance());
+      database.updateSQLBalance(Username, accountS.getBalance(), "Savings");
     } catch (InvalidAmountException e) {
-      System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (WithdrawalsAvailableException e) {
-      System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (SQLException e) {
-      System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     }
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -263,17 +269,17 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice3Savings(Scanner selection) {
+  public static void choice3Savings(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
       accountS.deposit(selection.nextFloat());
-      database.updateSQLBalance(Username, accountS.getBalance());
+      database.updateSQLBalance(Username, accountS.getBalance(), "Savings");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (ArithmeticException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+        System.out.println(e);
     }
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -285,17 +291,17 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice2Checking(Scanner selection) {
+  public static void choice2Checking(Scanner selection) {
     System.out.println("How much would you like to withdraw?");
     try {
       accountC.withdraw(selection.nextFloat());
-      database.updateSQLBalance(Username, accountC.getBalance());
+      database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (OverdraftAccountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (ArithmeticException e) {
         System.out.println(e);
     }
@@ -309,15 +315,15 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice3Checking(Scanner selection) {
+  public static void choice3Checking(Scanner selection) {
     System.out.println("How much would you like to deposit?");
     try {
       accountC.deposit(selection.nextFloat());
-      database.updateSQLBalance(Username, accountC.getBalance());
+      database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println("Exception:" + e);
     } catch (ArithmeticException e) {
         System.out.println(e);
     }
@@ -330,19 +336,19 @@ public class bankDriver {
    * @param selection 
    * Used to manage the user input.
    */
-  private static void choice4Checking(Scanner selection) {
+  public static void choice4Checking(Scanner selection) {
     System.out.println("How much would you like to pay");
     try {
       accountC.makePayment(selection.nextFloat());
-      database.updateSQLBalance(Username, accountC.getBalance());
+      database.updateSQLBalance(Username, accountC.getBalance(),"Checking");
     } catch (InvalidAmountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (OverdraftAccountException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (SQLException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+      System.out.println(e);
     } catch (ArithmeticException e) {
-    	System.out.println("Exception:" + HTMLEntityEncode(e.toString()));
+        System.out.println(e);
     }
     displayCheckingMenu();
   }
@@ -350,7 +356,7 @@ public class bankDriver {
   /**
    * Wrapper for the method to check the balance into checking account.
    */
-  private static void choice1Checking() {
+  public static void choice1Checking() {
     System.out.println("Balance: " + accountC.getBalance());
     displayCheckingMenu();
   }
@@ -358,7 +364,7 @@ public class bankDriver {
   /**
    * Wrapper for the method to check the balance into savings account.
    */
-  private static void choice1Savings() {
+  public static void choice1Savings() {
     System.out.println("Balance: " + accountS.getBalance());
     System.out.println("Please select a choice ranging from 0-3");
     displayMenu();
@@ -469,4 +475,22 @@ public class bankDriver {
 	    canonical = HTMLEntityEncode(canonical);
 	    return canonical;
 	  }
+  
+  protected static int chooseAccount(Scanner selection) {
+	  System.out.println("Which account do you wanna access?");
+	  System.out.println("Available accounts:");
+	  System.out.println("1. Checking");
+	  System.out.println("2. Savings");
+	  int account = selection.nextInt();
+	  int errCounter = 3;
+	  while(account != 1 && account != 2) {
+		  
+		  invalidChoice();
+		  account = selection.nextInt();
+		  errCounter--;
+		  if(errCounter == 0)
+			  return 0;
+	  }
+	  return account;
+  }
 }

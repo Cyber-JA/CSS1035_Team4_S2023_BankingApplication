@@ -246,27 +246,33 @@ public class database {
    * 
    * @see PreparedStatement
    */
-  public static int checkBalance(String username) throws SQLException {
-    int result = 0;
-    ResultSet resultSet = null;
+  public static int checkBalance(String username, String AccountType) throws SQLException {
+	    int result = 0;
+	    ResultSet resultSet = null;
 
-    try (Connection connection = DriverManager.getConnection(connectionUrl); 
-        Statement statement = connection.createStatement();) {
+	    try (Connection connection = DriverManager.getConnection(connectionUrl); 
+	        Statement statement = connection.createStatement();) {
 
-      // Create and execute a SELECT SQL statement.
-      String selectSql = "SELECT Balance FROM Userpass WHERE username = ?";
-      PreparedStatement stmt = connection.prepareStatement(selectSql);
-      stmt.setString(1, username);
-      resultSet = stmt.executeQuery();
-      resultSet.next();
-      result = resultSet.getInt(1);
-      // Print results from select statement
-      stmt.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return result;
-  }
+	      // Create and execute a SELECT SQL statement.
+	        String selectSql= null;
+	        if(AccountType.equalsIgnoreCase("Checking")) {
+	         selectSql = "SELECT CheckingBalance FROM Userpass WHERE username = ?";
+	        }
+	        if(AccountType.equalsIgnoreCase("Savings")) {
+	            selectSql = "SELECT SavingsBalance FROM Userpass WHERE username = ?";
+	           }
+	        PreparedStatement stmt = connection.prepareStatement(selectSql);
+	      stmt.setString(1, username);
+	      resultSet = stmt.executeQuery();
+	      resultSet.next();
+	      result = resultSet.getInt(1);
+	      // Print results from select statement
+
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+	    return result;
+	  }
 
   /**
    * This method is used to update the balance column of the specified user into
@@ -287,17 +293,20 @@ public class database {
    * 
    * @see PreparedStatement
    */
-  public static void updateSQLBalance(String username, double balance) throws SQLException {
-
+  public static void updateSQLBalance(String username, double balance, String AccountType) throws SQLException {
+	  String selectSql = null;
     try (Connection connection = DriverManager.getConnection(connectionUrl); 
         Statement statement = connection.createStatement();) {
 
-      // Create and execute a SELECT SQL statement.
-      String selectSql = "UPDATE Userpass SET Balance = " + balance + " WHERE username = ?";
+    	if(AccountType.equalsIgnoreCase("Checking")) {
+       	 selectSql = "SELECT CheckingBalance FROM Userpass WHERE username = ?";
+       	}
+       	if(AccountType.equalsIgnoreCase("Savings")) {
+          	 selectSql = "SELECT SavingsBalance FROM Userpass WHERE username = ?";
+          	}
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       stmt.execute();
-      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
