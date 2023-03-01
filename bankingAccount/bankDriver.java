@@ -380,7 +380,8 @@ public class bankDriver {
   }
   
   /**
-   * Method used to normalize user input.
+   * Method used to normalize user input according to the specified Normalizer.
+   * {@link java.text.Normalizer.Form#NFKC}
    * 
    *  @param input
    *  Untrusted input to normalize.
@@ -395,7 +396,7 @@ public class bankDriver {
 	  }
 	 
   /**
-   * Performing encoding of invalid characters.
+   * Performing encoding of invalid characters before outputting it into stdout.
    * 
    *  @param input
    *  Receiving normalized, then validated input.
@@ -452,7 +453,11 @@ public class bankDriver {
   
   /**
    * In this method are performed both validation and normalization 
-   * of user's input.
+   * of user's input. Normalization is performed with the normalize method.
+   * In particular, related to the validation, the check is performed against a specified patter.
+   * At the end, output encoding for nonvalid characters is performed and the value returned.
+   * @see normalize
+   * 
    * 
    *  @param name
    *  Input acquired by the thrown exception
@@ -497,7 +502,16 @@ public class bankDriver {
 	  return choice;
   }
   
-  protected static int validateIntInput(Scanner selection) {
+  /**
+   * Method used to validate correctly integer user's input.
+   * 
+   * @param selection.
+   * Scanner used to perform reading from stdin.
+   * 
+   * @return intInputValue
+   * Returned integer value parsed or -1 on error.
+   */
+  public static int validateIntInput(Scanner selection) {
       String input = selection.next();
       int intInputValue = 0;
       try {
@@ -508,6 +522,15 @@ public class bankDriver {
       }
   }
   
+  /**
+   * Method used to validate correctly float user's input.
+   * 
+   * @param selection.
+   * Scanner used to perform reading from stdin.
+   * 
+   * @return floatInputValue
+   * Returned float value parsed or -1 on error.
+   */
   protected static float validateFloatInput(Scanner selection) {
       String input = selection.next();
       float floatInputValue = 0;

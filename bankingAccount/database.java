@@ -185,46 +185,6 @@ public class database {
   }
 
   /**
-   * This method is used to check which kind of account type is contained into the
-   * db associated with the user specified as parameter.
-   * 
-   * SECURE PRACTICE: A prepared statement is used into quering the database, to avoid SQLInjection attacks.
-   * 
-   * @param username
-   * Username inserted by the user into the login phase.
-   * 
-   * @return result
-   * Result of the database query.
-   * 
-   * @throws SQLException
-   * Exception thrown in case of a malformed SQL request.
-   * 
-   * @see SQLException
-   * 
-   * @see PreparedStatement
-   */
-  public static String checkAccountType(String username) throws SQLException {
-    String result = null;
-    ResultSet resultSet = null;
-
-    try (Connection connection = DriverManager.getConnection(connectionUrl); 
-        Statement statement = connection.createStatement();) {
-
-      // Create and execute a SELECT SQL statement.
-      String selectSql = "SELECT Accounttype FROM Userpass WHERE username = ?";
-      PreparedStatement stmt = connection.prepareStatement(selectSql);
-      stmt.setString(1, username);
-      resultSet = stmt.executeQuery();
-      resultSet.next();
-      result = resultSet.getString(1);
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return result;
-  }
-
-  /**
    * Method used to retrieve the balance of the user whose username is specified
    * as parameter.
    * 

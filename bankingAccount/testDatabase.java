@@ -130,37 +130,8 @@ class testDatabase {
   }
 
   @Test
-  void testCheckAccountType() {
-    System.out.println("-----Testing Checking Account Type database-----");
-    System.out.println("Testing with user: admin");
-    String username = "admin";
-    /* retrieving data from database */
-    try (Connection connection = DriverManager.getConnection(connectionUrl); 
-        Statement statement = connection.createStatement();) {
-
-      // Create and execute a SELECT SQL prepared statement.
-      String selectSql = "SELECT Accounttype FROM Userpass WHERE username = ?";
-      PreparedStatement stmt = connection.prepareStatement(selectSql);
-      stmt.setString(1, username);
-      ResultSet resultSet = stmt.executeQuery();
-      resultSet.next();
-      String result = resultSet.getString(1);
-      /* Expected data */
-      System.out.println("Expected: " + result);
-      /* Actual data */
-      System.out.println("Actual: " + database.checkAccountType(username));
-      /* testing */
-      assertEquals(database.checkAccountType(username), result);
-      stmt.close();
-    } catch (SQLException e) {
-      fail("Exception: " + e);
-    }
-    System.out.println("-----End Checking Account Type database test-----");
-  }
-
-  @Test
-  void testCheckBalance() {
-    System.out.println("-----Testing Checking Balance database-----");
+  void testCheckSavingsBalance() {
+    System.out.println("-----Testing Savings Balance database-----");
     String username = "user";
     System.out.println("Testing with user: user");
     /* retrieving data from the database */
@@ -168,7 +139,7 @@ class testDatabase {
             Statement statement = connection.createStatement();) {
 
       // Create and execute a SELECT SQL prepared statement.
-      String selectSql = "SELECT Balance FROM Userpass WHERE username = ?";
+      String selectSql = "SELECT SavingsBalance FROM Userpass WHERE username = ?";
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       ResultSet resultSet = stmt.executeQuery();
@@ -177,9 +148,38 @@ class testDatabase {
       /* Expected data */
       System.out.println("Expected: " + result);
       /* Actual data */
-      System.out.println("Actual: " + database.checkBalance(username));
+      System.out.println("Actual: " + database.checkBalance(username, "Savings"));
       /* testing */
-      assertEquals(database.checkBalance(username), result);
+      assertEquals(database.checkBalance(username, "Savings"), result);
+      stmt.close();
+    } catch (SQLException e) {
+      fail("Exception: " + e);
+    }
+    System.out.println("-----End Savings Balance  database test-----");
+  }
+  
+  @Test
+  void testCheckCheckingBalance() {
+    System.out.println("-----Testing Checking Balance database-----");
+    String username = "user";
+    System.out.println("Testing with user: user");
+    /* retrieving data from the database */
+    try (Connection connection = DriverManager.getConnection(connectionUrl); 
+            Statement statement = connection.createStatement();) {
+
+      // Create and execute a SELECT SQL prepared statement.
+      String selectSql = "SELECT CheckingBalance FROM Userpass WHERE username = ?";
+      PreparedStatement stmt = connection.prepareStatement(selectSql);
+      stmt.setString(1, username);
+      ResultSet resultSet = stmt.executeQuery();
+      resultSet.next();
+      int result = resultSet.getInt(1);
+      /* Expected data */
+      System.out.println("Expected: " + result);
+      /* Actual data */
+      System.out.println("Actual: " + database.checkBalance(username, "Checking"));
+      /* testing */
+      assertEquals(database.checkBalance(username, "Checking"), result);
       stmt.close();
     } catch (SQLException e) {
       fail("Exception: " + e);
@@ -188,8 +188,8 @@ class testDatabase {
   }
 
   @Test
-  void testUpdateSQLBalance() {
-    System.out.println("-----Testing Update Balance database-----");
+  void testUpdateSQLCheckingBalance() {
+    System.out.println("-----Testing Update Checking Balance database-----");
     String username = "admin";
     System.out.println("Testing with user: admin");
     /* static testing data */
@@ -199,11 +199,11 @@ class testDatabase {
         Statement statement = connection.createStatement();) {
 
       // Create and execute a SELECT SQL prepared statement.
-      String selectSql = "UPDATE Userpass SET Balance = " + balance + " WHERE username = ?";
+      String selectSql = "UPDATE Userpass SET CheckingBalance = " + balance + " WHERE username = ?";
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       stmt.execute();
-      String testSql = "SELECT Balance FROM Userpass WHERE username = ?";
+      String testSql = "SELECT CheckingBalance FROM Userpass WHERE username = ?";
       PreparedStatement stmtTest = connection.prepareStatement(testSql);
       stmtTest.setString(1, username);
       ResultSet resultSet = stmtTest.executeQuery();
@@ -221,6 +221,43 @@ class testDatabase {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    System.out.println("-----End Update Balance database test-----");
+    System.out.println("-----End Update Checking Balance database test-----");
+  }
+
+@Test
+void testUpdateSQLSavingsBalance() {
+  System.out.println("-----Testing Update Savings Balance database-----");
+  String username = "admin";
+  System.out.println("Testing with user: admin");
+  /* static testing data */
+  double balance = 10000.54;
+  /* retrieving data from the database */
+  try (Connection connection = DriverManager.getConnection(connectionUrl); 
+      Statement statement = connection.createStatement();) {
+
+    // Create and execute a SELECT SQL prepared statement.
+    String selectSql = "UPDATE Userpass SET SavingsBalance = " + balance + " WHERE username = ?";
+    PreparedStatement stmt = connection.prepareStatement(selectSql);
+    stmt.setString(1, username);
+    stmt.execute();
+    String testSql = "SELECT SavingsBalance FROM Userpass WHERE username = ?";
+    PreparedStatement stmtTest = connection.prepareStatement(testSql);
+    stmtTest.setString(1, username);
+    ResultSet resultSet = stmtTest.executeQuery();
+    resultSet.next();
+    double result = resultSet.getDouble(1);
+    /* Expected value */
+    System.out.println("Expected: " + balance);
+    /* Actual value */
+    System.out.println("Actual: " + result);
+    /* testing */
+    assertEquals(balance, result);
+    stmt.close();
+    stmtTest.close();
+    connection.close();
+  } catch (SQLException e) {
+    e.printStackTrace();
+  }
+  System.out.println("-----End Update Savings Balance database test-----");
   }
 }
