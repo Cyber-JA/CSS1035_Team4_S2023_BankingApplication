@@ -64,10 +64,15 @@ public class bankDriver {
 
   public static void main(String[] args)
       throws NoSuchAlgorithmException, SQLException, IOException, ArithmeticException {
+	  database a = new database();
 	  
 	  setUTF8systemout();
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer
-      System.out.println(
+    	database.createAccount("Hassan2","balls",100,100);
+    	System.out.println(database.checkUID("Hassan2"));
+    
+    	System.out.println(a.getRowCount());
+    	System.out.println(
           "Welcome to SJU bank, please enter your username "
           + "followed by the enter key then your password "
           + "followed by the enter key");

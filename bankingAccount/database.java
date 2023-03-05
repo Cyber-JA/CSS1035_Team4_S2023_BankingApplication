@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 /**
  * Class implementing the connection with the database and it's used
  * functionalities The Database contains a table named Userpass, in which
@@ -176,8 +178,14 @@ public class database {
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       resultSet = stmt.executeQuery();
-      resultSet.next();
+      if (resultSet.next() == false) {
+          System.out.println("ResultSet in empty in Java");
+          return -1;
+        }
+      else {
       result = resultSet.getInt(1);
+      }
+      
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -268,4 +276,40 @@ String selectSql = null;
       e.printStackTrace();
     }
   }
+public static int getRowCount() throws SQLException {
+	try (Connection connection = DriverManager.getConnection(connectionUrl); 
+	        Statement statement = connection.createStatement();) {
+		String selectSql = "SELECT count(*) FROM Userpass";
+		PreparedStatement stmt = connection.prepareStatement(selectSql);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		int count = rs.getInt(1);
+		return count;
+	}
+	
+}
+public static void createAccount(String UserName, String Password, long CheckingBalance, long SavingsBalance) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
+	    
+		if(checkUID(UserName)==-1) {
+		
+	
+	try (Connection connection = DriverManager.getConnection(connectionUrl); 
+	        Statement statement = connection.createStatement();) {
+		String selectSql = "INSERT INTO Userpass (UserID, Username, Password,CheckingBalance,SavingsBalance) "
+				+ "VALUES (?, ?, ?, ?, ?);";  
+		PreparedStatement stmt = connection.prepareStatement(selectSql);
+		stmt.setLong(1, getRowCount()+1);
+		stmt.setString(2, UserName);
+		stmt.setString(3, md5hash(Password));
+		stmt.setLong(4, CheckingBalance);
+		stmt.setLong(5, SavingsBalance);
+		stmt.execute();
+		System.out.println("Account successfully created with username: " + UserName + " Password: " + md5hash(Password));
+}
+		}
+		else {
+			System.out.println("Account already exists");
+		}
+	}
+	
 }
