@@ -67,10 +67,7 @@ public class bankDriver {
 	  database a = new database();
 	  
 	  setUTF8systemout();
-    try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer
-    	database.createAccount("Hassan2","balls",100,100);
-    	System.out.println(database.checkUID("Hassan2"));
-    
+    try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer    
     	System.out.println(a.getRowCount());
     	System.out.println(
           "Welcome to SJU bank, please enter your username "
@@ -78,9 +75,13 @@ public class bankDriver {
           + "followed by the enter key");
       Username = in.nextLine();
       Password = in.nextLine();
+      if(createAccountMenu(in) == 0) {
+    	  database.createAccount(Username, Password, 0, 0);
+      }
       passwordRequirements(Password);
       validate(Username,Username);
       validate(Password,Password);
+      
       // exiting from the try-catch statement will free the buffer
       Scanner selection = new Scanner(System.in); 
       // login
@@ -503,6 +504,20 @@ public class bankDriver {
 		  errCounter--;
 		  if(errCounter == 0)
 			  return 0;
+	  }
+	  return choice;
+  }
+  
+  protected static int createAccountMenu(Scanner selection) {
+	  
+	  System.out.println("Do you want to create a new account ?");
+	  System.out.println("0. Yes");
+	  System.out.println("1. No");
+	  int choice = -1;
+	  int errorCounter = 3;
+	  while(choice != 0 && choice != 1 && errorCounter != 0) {
+		  choice = validateIntInput(selection);
+		  errorCounter--;
 	  }
 	  return choice;
   }

@@ -288,7 +288,7 @@ public static int getRowCount() throws SQLException {
 	}
 	
 }
-public static void createAccount(String UserName, String Password, long CheckingBalance, long SavingsBalance) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
+public static int createAccount(String UserName, String Password, double CheckingBalance, double SavingsBalance) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
 	    
 		if(checkUID(UserName)==-1) {
 		
@@ -301,14 +301,16 @@ public static void createAccount(String UserName, String Password, long Checking
 		stmt.setLong(1, getRowCount()+1);
 		stmt.setString(2, UserName);
 		stmt.setString(3, md5hash(Password));
-		stmt.setLong(4, CheckingBalance);
-		stmt.setLong(5, SavingsBalance);
+		stmt.setDouble(4, CheckingBalance);
+		stmt.setDouble(5, SavingsBalance);
 		stmt.execute();
 		System.out.println("Account successfully created with username: " + UserName + " Password: " + md5hash(Password));
+		return 1;
 }
 		}
 		else {
 			System.out.println("Account already exists");
+			return 0;
 		}
 	}
 	
