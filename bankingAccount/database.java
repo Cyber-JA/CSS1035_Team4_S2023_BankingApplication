@@ -138,8 +138,10 @@ public class database {
   public static int login(String username, String password)
       throws UnsupportedEncodingException, NoSuchAlgorithmException, SQLException {
     String uname = selectData(username);
+    System.out.println(uname);
     String pwd = md5hash(password);
-    if (!uname.isEmpty() && uname.contains(pwd)) {
+    System.out.println(pwd);
+    if (!uname.isEmpty() && uname.trim().equals(pwd)) {
       return 1;
     } else {
       System.out.println("wrong password");

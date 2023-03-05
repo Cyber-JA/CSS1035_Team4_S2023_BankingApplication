@@ -64,11 +64,10 @@ public class bankDriver {
 
   public static void main(String[] args)
       throws NoSuchAlgorithmException, SQLException, IOException, ArithmeticException {
-	  database a = new database();
 	  
 	  setUTF8systemout();
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer    
-    	System.out.println(a.getRowCount());
+    	System.out.println(database.getRowCount());
     	System.out.println(
           "Welcome to SJU bank, please enter your username "
           + "followed by the enter key then your password "
@@ -78,7 +77,7 @@ public class bankDriver {
       if(createAccountMenu(in) == 0) {
     	  database.createAccount(Username, Password, 0, 0);
       }
-      passwordRequirements(Password);
+      passwordRequirements(Password, in);
       validate(Username,Username);
       validate(Password,Password);
       
@@ -427,22 +426,31 @@ public class bankDriver {
 	    return sb.toString();
 	  }
   
-  private static void passwordRequirements(String Password) {
+  private static void passwordRequirements(String Password, Scanner selection) {
 		String str = Password;
-		int specials = 0, digits = 0, letters = 0, spaces = 0;
-		for (int i = 0; i < str.length(); ++i) {
-		   char ch = str.charAt(i);
-		   if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
-		      ++specials;
-		   } else if (Character.isDigit(ch)) {
-		      ++digits;
-		   } else if (Character.isWhitespace(ch)) {
-		      ++spaces;
-		   } else {
-		      ++letters;
-		   }
+		int specials = 0, digits = 0, letters = 0, satisfied = 0;
+		while(satisfied == 0) {
+			for (int i = 0; i < str.length(); ++i) {
+				   char ch = str.charAt(i);
+				   if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
+				      ++specials;
+				   } else if (Character.isDigit(ch)) {
+				      ++digits;
+				   } else {
+				      ++letters;
+				   }
+			}
+			if(letters >= 8 && digits >= 1 && specials >= 1)
+				satisfied = 1;
+			else {
+				System.out.println("Password needs to respect the following criteria:");
+				System.out.println("1. At least 8 letters");
+				System.out.println("2. At least 1 digit");
+				System.out.println("3. At least 1 special char");
+				System.out.println("Insert password:");
+				str = selection.next();
+			}
 		}
-	System.out.println("Password is: "+ letters + " letters long " + "contains " + digits +" digits " + specials+ " special characters "+ spaces+" white space");
 	}
 	
   /**
