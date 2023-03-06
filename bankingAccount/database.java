@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
@@ -291,7 +292,9 @@ public static int getRowCount() throws SQLException {
 	
 }
 public static int createAccount(String UserName, String Password, double CheckingBalance, double SavingsBalance) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
-	    
+	    if(passwordRequirements(Password)!=1) {
+	    	return -1; // returns -1 if password does not meet requirements
+	    }
 		if(checkUID(UserName)==-1) {
 		
 	
@@ -307,13 +310,40 @@ public static int createAccount(String UserName, String Password, double Checkin
 		stmt.setDouble(5, SavingsBalance);
 		stmt.execute();
 		System.out.println("Account successfully created with username: " + UserName + " Password: " + md5hash(Password));
-		return 1;
+		return 1; // returns 1 on successful account creation
 }
 		}
 		else {
 			System.out.println("Account already exists");
-			return 0;
+			return 0; // returns 0 if account exists
 		}
 	}
-	
+private static int passwordRequirements(String Password) {
+		String str = Password;
+		int specials = 0, digits = 0, letters = 0, satisfied = 0;
+		while(satisfied == 0) {
+			for (int i = 0; i < str.length(); ++i) {
+				   char ch = str.charAt(i);
+				   if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
+				      ++specials;
+				   } else if (Character.isDigit(ch)) {
+				      ++digits;
+				   } else {
+				      ++letters;
+				   }
+			}
+			if(letters >= 8 && digits >= 1 && specials >= 1) {
+				satisfied = 1;
+			return satisfied;
+			}
+			else {
+				System.out.println("Password needs to respect the following criteria:");
+				System.out.println("1. At least 8 letters");
+				System.out.println("2. At least 1 digit");
+				System.out.println("3. At least 1 special char");
+				return satisfied;
+			}
+		}
+		return satisfied;
+	}
 }
