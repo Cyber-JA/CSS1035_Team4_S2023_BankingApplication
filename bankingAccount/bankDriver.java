@@ -26,7 +26,7 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.common.DataValidati
 
 public class bankDriver {
 
-  private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W]{0,20}$");
+  private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W\\#\\<\\>]{0,20}$");
   static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
   static Savings_S2023_SJUBank accountS = new Savings_S2023_SJUBank();
   static String Username = null;
@@ -64,7 +64,6 @@ public class bankDriver {
 
   public static void main(String[] args)
       throws NoSuchAlgorithmException, SQLException, IOException, ArithmeticException {
-	  database a = new database();
 	  //System.out.println(a.createAccount("Username", "password5", 0, 0));
 	  setUTF8systemout();
     try (Scanner in = new Scanner(System.in)) { // try-with-resource statement to free the buffer    
@@ -416,9 +415,6 @@ public class bankDriver {
 	      char ch = input.charAt(i);
 	      if (Character.isLetterOrDigit(ch) || Character.isWhitespace(ch)) {
 	        sb.append(ch);
-	      }
-	      else if (!Character.isDigit(ch) && !Character.isLetter(ch) && !Character.isWhitespace(ch)) {
-	    	  sb.append(ch);
 	      }
 	      else {
 	        sb.append("&#" + (int)ch + ";");

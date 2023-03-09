@@ -102,7 +102,7 @@ public class database {
       resultSet = stmt.executeQuery();
       resultSet.next();
       result = resultSet.getString(1);
-
+      stmt.close();
     } catch (SQLException e) {
       System.out.println("Cannot find a result");
       return "";
@@ -182,11 +182,13 @@ public class database {
       stmt.setString(1, username);
       resultSet = stmt.executeQuery();
       if (resultSet.next() == false) {
+    	  stmt.close();
           System.out.println("ResultSet in empty in Java");
           return -1;
         }
       else {
       result = resultSet.getInt(1);
+      stmt.close();
       }
       
     } catch (SQLException e) {
@@ -235,7 +237,7 @@ public class database {
       resultSet.next();
       result = resultSet.getInt(1);
       // Print results from select statement
-
+      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -275,6 +277,7 @@ String selectSql = null;
       PreparedStatement stmt = connection.prepareStatement(selectSql);
       stmt.setString(1, username);
       stmt.execute();
+      stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -287,6 +290,7 @@ public static int getRowCount() throws SQLException {
 		ResultSet rs = stmt.executeQuery();
 		rs.next();
 		int count = rs.getInt(1);
+		stmt.close();
 		return count;
 	}
 	
@@ -309,6 +313,7 @@ public static int createAccount(String UserName, String Password, double Checkin
 		stmt.setDouble(4, CheckingBalance);
 		stmt.setDouble(5, SavingsBalance);
 		stmt.execute();
+		stmt.close();
 		System.out.println("Account successfully created with username: " + UserName + " Password: " + md5hash(Password));
 		return 1; // returns 1 on successful account creation
 }
