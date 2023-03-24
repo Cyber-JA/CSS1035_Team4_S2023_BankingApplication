@@ -1,3 +1,5 @@
+package BankingAccount;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
@@ -45,7 +47,7 @@ public class Credits {
 		
 		Label lblNewLabel = new Label(Credits, SWT.NONE);
 		lblNewLabel.setBounds(10, 10, 414, 186);
-		lblNewLabel.setText("Credits: Program by Hassan, Tatiana, Joke, Rav, Giuseppe ");
+		lblNewLabel.setText("Credits: Program by Hassan, Tatiana, Jake, Rav, Giuseppe ");
 
 	}
 }

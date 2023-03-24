@@ -1,5 +1,4 @@
-
-
+package BankingAccount;
 /**
  * This exception was defined to manage issues with negative inputs for the
  * "withdraw" and "deposit" methods. A negative amount is not accepted, hence is

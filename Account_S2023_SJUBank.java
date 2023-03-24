@@ -1,4 +1,4 @@
-
+package BankingAccount;
 
 /**
  * This is the superclass from which the savings and checking account are derived. 

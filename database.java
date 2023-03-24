@@ -1,4 +1,4 @@
-
+package BankingAccount;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.eclipse.swt.SWT;
@@ -115,6 +116,21 @@ public class database {
     }
     return result;
   }
+  public static void updateVlog(String ViolationType,String UID) throws SQLException {
+	  LocalDate dateObj = LocalDate.now();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+      String date = dateObj.format(formatter);
+	  
+	  String selectSql = "INSERT INTO ViolationLog (UID, Date, Type) "+ "VALUES ("+"'"+UID+"'"+", "+"'"+date+"'"+", "+ "'"+ViolationType+"'" + ");";
+	  
+	  try (Connection connection = DriverManager.getConnection(connectionUrl); 
+	          Statement statement = connection.createStatement();) {
+   
+	      	statement.execute(selectSql);
+	      } catch (SQLException e) {
+	        e.printStackTrace();
+	      }
+	    }
 
   /**
    * This function is used to perform the login, checking the data inserted by the
@@ -288,24 +304,51 @@ String selectSql = null;
       e.printStackTrace();
     }
   }
-  public static void updateTransactionHistory(String TransactionType, long Amount,int UID) throws SQLException {
+  public static ArrayList generateTransactionHistory(String UID) throws SQLException {
 	  String tableSelection = "transactionH" + UID;
+	  ArrayList<String[]> rowList = new ArrayList<String[]>();   
+	  double result = 0;
+	    ResultSet resultSet = null;
+
+	    try (Connection connection = DriverManager.getConnection(connectionUrl); 
+	        Statement statement = connection.createStatement();) {
+            
+            
+	    PreparedStatement stmt = connection.prepareStatement("SELECT TransactionDate, TransactionType, Amount, AccountType FROM transactionH1 WHERE UserID = ?");
+	      stmt.setString(1, UID);
+	      System.out.println("User Id =" + UID);
+	      resultSet = stmt.executeQuery();
+	      
+	      while(resultSet.next()) {
+	    	 //ArrayList<String> rowList = new ArrayList<String>();
+	    	 String TransactionDate = resultSet.getString("TransactionDate");
+	    	 String TransactionType = resultSet.getString("TransactionType");
+	    	 float Amount = resultSet.getFloat("Amount");
+	    	 String AccountType = resultSet.getString("AccountType");
+	    	 rowList.add(new String[] {TransactionDate,TransactionType,Double.toString(Amount),AccountType});
+	    	 
+	    	 
+	    	 //dataList.add(rowList);
+	     }
+            
+	      // Print results from select statement
+
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+	    return rowList;
+	  }
+  public static void updateTransactionHistory(String TransactionType, long Amount,int UID,String accountType) throws SQLException {
 	  LocalDate dateObj = LocalDate.now();
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
       String date = dateObj.format(formatter);
 	  
-	  String selectSql = "INSERT INTO $tableName (TransactionDate, TransactionType, Amount) "+ "VALUES ("+"'"+date+"'"+", "+"'"+ TransactionType+"'"+", "+ Amount+");";
-	  String query =selectSql.replace("$tableName",tableSelection);
+	  String selectSql = "INSERT INTO transactionH1 (TransactionDate, TransactionType, Amount, UserID, AccountType) "+ "VALUES ("+"'"+date+"'"+", "+"'"+ TransactionType+"'"+", "+ Amount+ ", " + UID + ", "+"'"+accountType+"'"+");";
+	  
 	  try (Connection connection = DriverManager.getConnection(connectionUrl); 
 	          Statement statement = connection.createStatement();) {
    
-	      	statement.execute(query);
-	       // PreparedStatement stmt = connection.prepareStatement(selectSql);
-	        //stmt.setString(1, tableSelection);
-	        //stmt.setString(2, date.toString());
-	        //stmt.setString(3, TransactionType);
-	        //stmt.setLong(4, Amount);
-	        //stmt.execute();
+	      	statement.execute(selectSql);
 	      } catch (SQLException e) {
 	        e.printStackTrace();
 	      }
@@ -341,18 +384,6 @@ try (Connection connection = DriverManager.getConnection(connectionUrl);
 	stmt.setDouble(4, CheckingBalance);
 	stmt.setDouble(5, SavingsBalance);
 	stmt.execute();
-	int userid = getRowCount();
-	String TableName= "transactionH"+ userid;
-	String Statement ="CREATE TABLE " +TableName+ "(\r\n"
-			+ "    TransactionDate varchar(255),\r\n"
-			+ "    TransactionType varchar(255),\r\n"
-			+ "    Amount float,\r\n"
-			+ ");";
-	PreparedStatement stmt1 = connection.prepareStatement(Statement);
-	//stmt1.setString(1,UserName +getRowCount()+1+"transactionH"); // set new table name to naming schema {UserName}{UserID}transactionH
-	
-	stmt1.execute();
-	
 	MessageBox box = new MessageBox(shell, SWT.OK);
 	box.setText("Success");
 	box.setMessage("Account has been created please login.");

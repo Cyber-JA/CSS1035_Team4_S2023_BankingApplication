@@ -1,4 +1,4 @@
-
+package BankingAccount;
 
 /**
  * This exception is used in case in which the account is overdrafted. In this

@@ -1,3 +1,5 @@
+package BankingAccount;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -17,10 +19,14 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.wb.swt.SWTResourceManager;
 interface GlobalConstants
 {
   String uname = "Chilly Billy";
-
 }
 public class BankLogin {
 	private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W]{0,20}$");
@@ -30,7 +36,7 @@ public class BankLogin {
 	  static String Password = null;
 	  
 	  database a = new database();
-	protected Shell shell;
+	protected Shell shlSjuBankLogin;
 	
 	
 	private Text usernameField;
@@ -59,9 +65,9 @@ public class BankLogin {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
+		shlSjuBankLogin.open();
+		shlSjuBankLogin.layout();
+		while (!shlSjuBankLogin.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -72,22 +78,26 @@ public class BankLogin {
 	 * Create contents of the window.
 	 */
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(450, 300);
-		shell.setText("SWT Application");
+		shlSjuBankLogin = new Shell();
+		shlSjuBankLogin.setBackgroundImage(SWTResourceManager.getImage("C:\\Users\\dckfa\\Downloads\\ui-ux-modernization-hero.png"));
+		//shlSjuBankLogin.setImage(SWTResourceManager.getImage(BankLogin.class, "/org/eclipse/jface/fieldassist/images/errorqf_ovr@2x.png"));
+		shlSjuBankLogin.setBackground(SWTResourceManager.getColor(192, 192, 192));
+		shlSjuBankLogin.setSize(517, 384);
+		shlSjuBankLogin.setText("SJU Bank Login");
 		
-		Button loginButton = new Button(shell, SWT.NONE);
-		loginButton.setBounds(214, 166, 142, 61);
-		loginButton.setText("Login");
+		Button loginButton = new Button(shlSjuBankLogin, SWT.NONE);
+		loginButton.setForeground(SWTResourceManager.getColor(94, 94, 221));
+		loginButton.setImage(SWTResourceManager.getImage("C:\\Users\\dckfa\\Downloads\\button_login(1).png"));
+		loginButton.setBounds(265, 234, 158, 65);
 		loginButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Username= usernameField.getText();
 				Password = passwordField.getText();
 				try {
-					if(a.login(Username, Password, shell)==1) {
+					if(a.login(Username, Password, shlSjuBankLogin)==1) {
 						BankGui window = new BankGui(Username);
-						windowCloseLogin(shell);
+						windowCloseLogin(shlSjuBankLogin);
 						
 						window.open();
 						
@@ -107,14 +117,16 @@ public class BankLogin {
 			}
 		});
 		
-		Button createAccountButton = new Button(shell, SWT.NONE);
+		Button createAccountButton = new Button(shlSjuBankLogin, SWT.NONE);
+		createAccountButton.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		createAccountButton.setImage(SWTResourceManager.getImage("C:\\Users\\dckfa\\Downloads\\button_create-account.png"));
 		createAccountButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Username= usernameField.getText();
 				Password = passwordField.getText();
 				try {
-					a.createAccount(Username, Password, 0.0, 0.0,shell);
+					a.createAccount(Username, Password, 0.0, 0.0,shlSjuBankLogin);
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -127,23 +139,44 @@ public class BankLogin {
 				}
 			}
 		});
-		createAccountButton.setText("Create Account");
-		createAccountButton.setBounds(49, 166, 142, 61);
+		createAccountButton.setBounds(45, 234, 214, 65);
 		
-		usernameField = new Text(shell, SWT.BORDER);
-		usernameField.setBounds(115, 37, 172, 21);
+		usernameField = new Text(shlSjuBankLogin, SWT.BORDER);
+		usernameField.setForeground(SWTResourceManager.getColor(94, 94, 221));
+		usernameField.setBackground(SWTResourceManager.getColor(192, 192, 192));
+		usernameField.setBounds(189, 70, 124, 33);
 		
-		passwordField = new Text(shell, SWT.BORDER);
+		passwordField = new Text(shlSjuBankLogin, SWT.BORDER | SWT.PASSWORD);
+		passwordField.setBackground(SWTResourceManager.getColor(192, 192, 192));
 		passwordField.setEchoChar('*');
-		passwordField.setBounds(115, 82, 172, 21);
+		passwordField.setBounds(189, 111, 124, 31);
 		
-		Label lblUsername = new Label(shell, SWT.NONE);
-		lblUsername.setBounds(41, 43, 55, 15);
-		lblUsername.setText("Username");
+		Label lblUsername = new Label(shlSjuBankLogin, SWT.NONE);
+		lblUsername.setFont(SWTResourceManager.getFont("Microsoft Sans Serif", 12, SWT.BOLD));
+		lblUsername.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+		lblUsername.setForeground(SWTResourceManager.getColor(230, 230, 230));
+		lblUsername.setImage(SWTResourceManager.getImage(BankLogin.class, "/icons/full/help.png"));
+		lblUsername.setBounds(88, 72, 86, 31);
+		lblUsername.setText("Username:");
 		
-		Label lblPassword = new Label(shell, SWT.NONE);
-		lblPassword.setText("Password");
-		lblPassword.setBounds(41, 88, 55, 15);
+		Label lblPassword = new Label(shlSjuBankLogin, SWT.NONE);
+		lblPassword.setFont(SWTResourceManager.getFont("Microsoft Sans Serif", 12, SWT.BOLD));
+		lblPassword.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+		lblPassword.setForeground(SWTResourceManager.getColor(230, 230, 230));
+		lblPassword.setText("Password:");
+		lblPassword.setBounds(88, 111, 86, 21);
+		
+		Button btnNewButton = new Button(shlSjuBankLogin, SWT.FLAT);
+		btnNewButton.setForeground(SWTResourceManager.getColor(42, 42, 42));
+		btnNewButton.setBackground(SWTResourceManager.getColor(42, 42, 42));
+		btnNewButton.setImage(SWTResourceManager.getImage(BankLogin.class, "/icons/full/help.png"));
+		btnNewButton.setBounds(319, 70, 25, 21);
+		
+		Button btnNewButton_1 = new Button(shlSjuBankLogin, SWT.FLAT);
+		btnNewButton_1.setForeground(SWTResourceManager.getColor(42, 42, 42));
+		btnNewButton_1.setBackground(SWTResourceManager.getColor(42, 42, 42));
+		btnNewButton_1.setImage(SWTResourceManager.getImage(BankLogin.class, "/icons/full/help.png"));
+		btnNewButton_1.setBounds(319, 111, 25, 21);
 
 	}
 

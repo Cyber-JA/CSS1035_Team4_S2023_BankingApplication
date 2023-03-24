@@ -1,4 +1,4 @@
-
+package BankingAccount;
 
 /**
  * Class implementing the functionalities of the checking account.

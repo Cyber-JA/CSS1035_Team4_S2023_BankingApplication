@@ -1,4 +1,4 @@
-
+package BankingAccount;
 
 /**
  * Class used to implement the savings account functionalities.

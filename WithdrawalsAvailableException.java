@@ -1,4 +1,4 @@
-
+package BankingAccount;
 /**
  * This exception is defined to manage issues in case the number of withdrawals
  * available is = 0, hence this is thrown if the user try to perform such action
