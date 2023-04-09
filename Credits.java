@@ -3,7 +3,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
 
-public class Credits {
+class Credits {
 
 	protected Shell Credits;
 

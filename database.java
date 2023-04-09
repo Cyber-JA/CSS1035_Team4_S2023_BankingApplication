@@ -42,26 +42,8 @@ public class database {
 	private static String connectionUrl;
 
 	/**
-	 * function used to compute the MD5 hash over the password. This is then used to
-	 * check into login function with the data contained into the database
-	 * 
-	 * 
-	 * @param password Password inserted by the user in the login phase.
-	 * 
-	 * @throws UnsupportedEncodingException Exception thrown when the password
-	 *                                      inserted by the user is not supported by
-	 *                                      the encoding used into the program. This
-	 *                                      is unlikely, since the UTF-8 Encoding is
-	 *                                      adopted.
-	 * 
-	 * @throws NoSuchAlgorithmException     Exception thrown in case the algorithm
-	 *                                      used to perform the digest into
-	 *                                      performing the login is not a valid one.
-	 * 
-	 * @return hashtext Hash of the password inserted by the user. N.B. The stored
-	 *         value is never exposed.
+	 * Method used to establish the connection with the database. 
 	 */
-
 	public static void setConnectionUrl() {
 		String password = CryptographicServices.decryptAndRetrievePasswordToAccessDatabase();
 		connectionUrl = "jdbc:sqlserver://sjubank.database.windows.net:1433;" + "database=SJUbank;"
@@ -120,10 +102,19 @@ public class database {
 		return result;
 	}
 
+	/**
+	 * Method used to retrieve the salt stored in the database.
+	 * 
+	 *  @param username Username of the user linked to the salt in the database.
+	 *  
+	 *  @return result. String value in which the salt retrieved is stored.
+	 *  
+	 *  @throws SQLException Exception SQL related.
+	 */
 	public static String checkSalt(String username) throws SQLException {
 		String result = null;
 		ResultSet resultSet = null;
-
+		setConnectionUrl();
 		try (Connection connection = DriverManager.getConnection(connectionUrl);
 				Statement statement = connection.createStatement();) {
 
@@ -148,31 +139,15 @@ public class database {
 	/**
 	 * This function is used to perform the login, checking the data inserted by the
 	 * user with the one contained into the database. The MD5Hash is used to perform
-	 * this computation.
+	 * this computation. SHA-256 is used as algorithm, performing the hashing of password with salt.
 	 * 
-	 * @param username Username inserted by the user into the login phase.
+	 * @param salt Salt that is used to compute the hash.
 	 * 
 	 * @param password Password inserted by the user into the login phase.
 	 * 
-	 * @return int Binary value indicating if the login procedure proceeded
-	 *         correctly or not.
+	 * @return String hashed password value.
 	 * 
-	 * @throws UnsupportedEncodingException Exception thrown when the password
-	 *                                      inserted by the user is not supported by
-	 *                                      the encoding used into the program. This
-	 *                                      is unlikely, since the UTF-8 Encoding is
-	 *                                      adopted.
-	 * 
-	 * @throws NoSuchAlgorithmException     Exception thrown in case the algorithm
-	 *                                      used to perform the digest into
-	 *                                      performing the login is not a valid one.
-	 * 
-	 * @throws SQLException                 Exception thrown in case of malformed
-	 *                                      SQL statement.
-	 * 
-	 * @see SQLException
 	 */
-
 	public static String getSecurePassword(String password, String salt) {
 		String generatedPassword = null;
 		try {
@@ -190,13 +165,36 @@ public class database {
 		return generatedPassword;
 	}
 
-	private static String getSalt() throws NoSuchAlgorithmException {
+	/**
+	 * Method used to generate a random salt.
+	 * 
+	 *  @throws NoSuchAlgorithmException Exception thrown when the algorithm related is not supported.
+	 */
+	static String getSalt() throws NoSuchAlgorithmException {
 		SecureRandom random = new SecureRandom();
 		byte[] salt = new byte[16];
 		random.nextBytes(salt);
 		return Base64.getEncoder().encodeToString(salt);
 	}
-
+	
+	/**
+	 * Method used to perform the login functionality.
+	 * 
+	 * @param username User's username provided.
+	 * 
+	 * @param password Password provided in the login field.
+	 * 
+	 * @param shell Shell object employed.
+	 * 
+	 * @return returned value corresponding to success or failure (1 or 0).
+	 * 
+	 * @throws UnsupportedEncodingException Exception thrown when the encoding scheme related is not supported.
+	 * 
+	 * @throws NoSuchAlgorithmException Exception thrown when the algorithm related is not supported.
+	 * 
+	 * @throws SQLException Exception SQL related.
+	 * 
+	 */
 	public static int login(String username, String password, Shell shell)
 			throws UnsupportedEncodingException, NoSuchAlgorithmException, SQLException {
 		setConnectionUrl();
@@ -293,6 +291,8 @@ public class database {
 	 * avoid SQLInjection attacks.
 	 * 
 	 * @param username Username inserted by the user into the login phase.
+	 * 
+	 * @param AccountType Type of account related to the check operation.
 	 *
 	 * @throws SQLException Exception thrown in case of a malformed SQL request.
 	 * 
@@ -355,6 +355,8 @@ public class database {
 	 * 
 	 * @param balance  Future balance of the user that will be inserted into the
 	 *                 database.
+	 *                 
+	 * @param AccountType Account type related over which perform the update.
 	 * 
 	 * @throws SQLException Exception thrown in case of a malformed SQL request.
 	 * 
@@ -397,8 +399,16 @@ public class database {
 		}
 	}
 
-	/*
-	 * Implementation of method with generic type on ArrayList
+	/**
+	 * Implementation of method with generic type on ArrayList. This is used to generate the transactions' list.
+	 * 
+	 * @param UID User Identifier to reference in the database.
+	 * 
+	 * @param <E> Generic type used within the list.
+	 * 
+	 * @return rowList List returned after retrieving it from the database.
+	 * 
+	 * @throws SQLException Exception SQL related.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <E> ArrayList<E[]> generateTransactionHistory(String UID) throws SQLException {
@@ -433,7 +443,20 @@ public class database {
 		}
 		return rowList;
 	}
-
+	
+	/**
+	 * Updating the transactions within the database.
+	 * 
+	 * @param TransactionType User Identifier to reference in the database.
+	 * 
+	 * @param amount1 Amount related to transaction.
+	 * 
+	 * @param UID User Identifier linked to the transaction.
+	 * 
+	 * @param accountType Type of the account related to the transaction.
+	 * 
+	 * @throws SQLException Exception SQL related.
+	 */
 	public static void updateTransactionHistory(String TransactionType, double amount1, int UID, String accountType)
 			throws SQLException {
 		setConnectionUrl();
@@ -453,7 +476,15 @@ public class database {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Method used to retrieve the number of rows in the database.
+	 * 
+	 * @return count Value returned with the number of rows.
+	 * 
+	 *  @throws SQLException Exception SQL related.
+	 * 
+	 */
 	public static int getRowCount() throws SQLException {
 		setConnectionUrl();
 		try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -467,7 +498,30 @@ public class database {
 		}
 
 	}
-
+	
+	
+	/**
+	 * Method used to create the checking and saving account, when a user creates a new account.
+	 * 
+	 *  @param UserName Username provided.
+	 *  
+	 *  @param Password Password selected.
+	 *  
+	 *  @param CheckingBalance initial amount for checking.
+	 *  
+	 *  @param SavingsBalance initial amount for savings.
+	 *  
+	 *  @param shell Shell used.
+	 *  
+	 *  @return Value returned are 1 on success and 0 and failure.
+	 *  
+	 *  @throws SQLException Exception SQL related.
+	 *  
+	 *  @throws UnsupportedEncodingException Exception thrown if the encoding scheme used is not supported.
+	 *  
+	 *  @throws NoSuchAlgorithmException Exception thrown if the algorithme referenced is not supported in hashing.
+	 *  
+	 */
 	public int createAccount(String UserName, String Password, double CheckingBalance, double SavingsBalance,
 			Shell shell) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
 		setConnectionUrl();
@@ -547,6 +601,17 @@ public class database {
 		return satisfied;
 	}
 
+	
+	/**
+	 * This method is used to store entries related to specific violation performed by an user. This log is stored in a 
+	 * more reliable storage area, that is the database, with respect to the other logs.
+	 * 
+	 *  @param ViolationType Kind of violation performed. 
+	 *  
+	 *  @param UID Identifier of the user performing the violation.
+	 *  
+	 *  @throws SQLException Exception SQL related.
+	 */
 	public static void updateVlog(String ViolationType, String UID) throws SQLException {
 		setConnectionUrl();
 		LocalDate dateObj = LocalDate.now();

@@ -19,7 +19,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.junit.jupiter.api.Test;
 
-public class testCryptographicServices {
+ class testCryptographicServices {
 	private static SecretKey secretKey;
 
 	@Test

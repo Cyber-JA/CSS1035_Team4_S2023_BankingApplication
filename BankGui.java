@@ -1,3 +1,4 @@
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,6 +20,9 @@ import org.apache.logging.log4j.*;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
 
+/**
+ * This class is used to manage the GUI after performing the login, with all the needed functionalities
+ */
 public class BankGui {
 	static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
 	static Savings_S2023_SJUBank accountS = new Savings_S2023_SJUBank();
@@ -37,8 +41,8 @@ public class BankGui {
 	/**
 	 * Launch the application.
 	 * 
-	 * @param args
-	 * @throws SQLException
+	 * @param Username of the user.
+	 * @throws SQLException Exception SQL related.
 	 */
 	BankGui(String Username) throws SQLException {
 		BankGui.Username = Username;
@@ -46,6 +50,11 @@ public class BankGui {
 		transactionHistoryarray = a.generateTransactionHistory(Integer.toString(BankGui.UID));
 	}
 
+	/**
+	 * Main method
+	 * 
+	 *  @param args. Arguments passed from command line.
+	 */
 	public static void main(String[] args) {
 		try {
 			BankGui window = new BankGui(Username);
@@ -59,7 +68,7 @@ public class BankGui {
 	/**
 	 * Open the window.
 	 * 
-	 * @throws SQLException
+	 * @throws SQLException Exception SQL related.
 	 */
 	public void open() throws SQLException {
 		Display display = Display.getDefault();
@@ -76,7 +85,7 @@ public class BankGui {
 	/**
 	 * Create contents of the window.
 	 * 
-	 * @throws SQLException
+	 * @throws SQLException Exception SQL related.
 	 */
 	protected void createContents() throws SQLException {
 		setObjectVariablesSavings();
@@ -402,6 +411,13 @@ public class BankGui {
 		});
 	}
 
+	/**
+	 * This method is used to retrieve data from db and setup the account.
+	 * 
+	 * @throws SQLException Exception thrown in case of wrong SQL request.
+	 * 
+	 * @see SQLException
+	 */
 	static void setObjectVariablesSavings() throws SQLException {
 		try {
 			accountS.setBalance(database.checkBalance(Username, "Savings"));
@@ -436,7 +452,7 @@ public class BankGui {
 	/**
 	 * Method used to validate correctly integer user's input.
 	 * 
-	 * @param selection. Scanner used to perform reading from stdin.
+	 * @param value. Value that should be validated.
 	 * 
 	 * @return intInputValue Returned integer value parsed or -1 on error.
 	 */
@@ -454,7 +470,7 @@ public class BankGui {
 	/**
 	 * Method used to validate correctly float user's input.
 	 * 
-	 * @param selection. Scanner used to perform reading from stdin.
+	 * @param value. Value that should be validated.
 	 * 
 	 * @return floatInputValue Returned float value parsed or -1 on error.
 	 */

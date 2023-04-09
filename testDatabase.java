@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.UnsupportedEncodingException;
@@ -35,9 +36,9 @@ class testDatabase {
 		try {
 			setConnectionUrl();
 			/* this is the data that is used to check */
-			String username = "admin";
-			String check = "5e06b84ac4f276aa03afc04fd1e82856";
-			System.out.println("Retrieving password of user: admin");
+			String username = "TestingUser";
+			String check = "c540fd9b9d0c110caecf7249de72f57d42d9bb9e324a95868426b9e347a61dc7";
+			System.out.println("Retrieving password of user: TestingUser");
 			/* applying the method that should be tested */
 			String result = database.selectData("user");
 
@@ -52,7 +53,7 @@ class testDatabase {
 			result = resultSet.getString(1).trim();
 
 			/* expected value */
-			System.out.println("Expected: 5e06b84ac4f276aa03afc04fd1e82856");
+			System.out.println("Expected: c540fd9b9d0c110caecf7249de72f57d42d9bb9e324a95868426b9e347a61dc7");
 			/* actual value */
 			System.out.println("Actual: " + result);
 			/* testing */
@@ -228,8 +229,8 @@ class testDatabase {
 		System.out.println("-----Testing Login-----");
 
 		try {
-			String username = "testing";
-			String password = "testingp1@";
+			String username = "TestingUser";
+			String password = "testingpassword1@";
 			Shell shell = new Shell();
 			System.out.println("Testing with username: " + username);
 			System.out.println("Testing with password: " + password);
@@ -336,4 +337,53 @@ class testDatabase {
 		}
 		System.out.println("-----End Generate Transaction History test-----");
 	}
+	
+	@Test
+	void testGetSalt() {
+
+		System.out.println("-----Testing Salt Generation-----");
+		try {
+			String salt = database.getSalt();
+			System.out.println("Salt generated: " + salt);
+			assertNotNull(salt);
+		} catch (Exception e) {
+			fail();
+		}
+		System.out.println("-----End Salt Generation test-----");
+	}
+	
+	@Test
+	void testGetSecurePassword() {
+
+		System.out.println("-----Testing Password Hashing-----");
+		try {
+			String password = "TestingPassword1@";
+			String salt = database.getSalt();
+			System.out.println("Password to hash: " + password);
+			System.out.println("Salt used: " + salt);
+			System.out.println("Actual hashed value: " + database.getSecurePassword(password, salt));
+			assertNotNull(database.getSecurePassword(password, salt));
+		} catch (Exception e) {
+			fail();
+		}
+		System.out.println("-----End Password Hashing test-----");
+	}
+	
+	@Test
+	void testCheckSalt() {
+
+		System.out.println("-----Testing Stored Salt-----");
+		try {
+			String username = "TestingUser";
+			System.out.println("Testing with user: " + username);
+			System.out.println("Expected value: wNiEjQ8DZBqz95fd/5lr8A==");
+			String salt = database.checkSalt(username);
+			System.out.println("Actual value: " + salt);
+			assertEquals("wNiEjQ8DZBqz95fd/5lr8A==", salt.trim());
+		} catch (Exception e) {
+			fail();
+		}
+		System.out.println("-----End Stored Salt test-----");
+	}
+	
 }

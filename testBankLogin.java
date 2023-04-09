@@ -10,7 +10,7 @@ class testBankLogin {
 
 	@Test
 	public void testValidateAndEncode() {
-		System.out.println("-----Testing validating validating and encoding -----");
+		System.out.println("-----Testing validation and encoding -----");
 		try {
 			String val1 = BankLogin.validate("input example", "input example");
 			assertEquals("input example", val1);

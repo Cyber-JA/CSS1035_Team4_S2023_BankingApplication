@@ -25,6 +25,9 @@ interface GlobalConstants {
 	String uname = "Chilly Billy";
 }
 
+/**
+ * This is the class used to manage the Login functionalities and the related GUI.
+ */
 public class BankLogin {
 	private static final Pattern pattern = Pattern.compile("^[\\s\\w\\W]{0,20}$");
 	static Checking_S2023_SJUBank accountC = new Checking_S2023_SJUBank();
@@ -39,13 +42,13 @@ public class BankLogin {
 	private Text usernameField;
 	private Text passwordField;
 
+	static BankLogin window = new BankLogin();
+
 	/**
 	 * Launch the application.
 	 * 
-	 * @param args
+	 * @param args command-line arguments.
 	 */
-	static BankLogin window = new BankLogin();
-
 	public static void main(String[] args) {
 
 		try {
